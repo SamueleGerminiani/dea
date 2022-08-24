@@ -1,0 +1,40 @@
+<harm>
+	<context name="default">
+
+		<numeric clsEffort="0.01" exp="b" loc="dt"/>
+		<numeric clsEffort="0.01" exp="a" loc="dt"/>
+        <!--
+		<prop exp="out[0]" loc="c"/>
+		<prop exp="out[1]" loc="c"/>
+		<prop exp="out[2]" loc="c"/>
+		<prop exp="out[3]" loc="c"/>
+		<prop exp="out[4]" loc="c"/>
+		<prop exp="out[5]" loc="c"/>
+		<prop exp="out[6]" loc="c"/>
+		<prop exp="out[7]" loc="c"/>
+		<prop exp="out[8]" loc="c"/>
+
+		<template dtLimits="3A,0.1E" exp="G({..&&..}|-> P0)" /> 
+        -->
+		<numeric clsEffort="0.01" exp="out" loc="c"/>
+
+
+        <!--
+		<template dtLimits="3A,0.01E" exp="G({..&&..}|-> !P0)" /> 
+        -->
+
+		<template dtLimits="3A,0E" exp="G({..&&..}|-> P0)" /> 
+
+
+		<sort name="causality" exp="1-afct/traceLength"/>
+		<sort name="frequency" exp="atct/traceLength"/>
+        <!--
+		<filter name="frequency" threshold="0.05" exp="atct/traceLength"/>
+        -->
+
+
+	</context>
+</harm>
+
+
+

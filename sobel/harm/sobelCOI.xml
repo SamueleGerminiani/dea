@@ -1,0 +1,383 @@
+<harm>
+	<context name="p2_p0">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2_p0" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="p8_p6">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8_p6" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="p0_p6">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p0_p6" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+
+	<context name="p2_p8">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2_p8" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="p5_p3">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5_p3" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="p1_p7">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1_p7" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="center_rm">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="center_rm" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="center_tm">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="center_tm" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="center_1">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="center_1" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="center_2">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="center_2" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="center_3">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="center_3" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="center_4">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="center_4" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="gx_temp">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="gx_temp" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+
+	<context name="gy_temp">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="gy_temp" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="or_out">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<prop exp="or_out" loc="c"/>
+		<prop exp="!or_out" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="add_out_1">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<prop exp="add_out_1" loc="c"/>
+		<prop exp="!add_out_1" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="add_out_2">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<prop exp="add_out_2" loc="c"/>
+		<prop exp="!add_out_2" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+
+	<context name="add_out_3">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<prop exp="add_out_3" loc="c"/>
+		<prop exp="!add_out_3" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+
+	<context name="add_out_4">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<prop exp="add_out_4" loc="c"/>
+		<prop exp="!add_out_4" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="gx">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="gx" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+
+	<context name="gy">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="gy" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="gx_comp">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="gx_comp" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+
+	<context name="gy_comp">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="gy_comp" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+
+	<context name="gx_2s_comp">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="gx_2s_comp" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+
+	<context name="gy_2s_comp">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="gy_2s_comp" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="abs_gx">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="abs_gx" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="abs_gy">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="abs_gx" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+	<context name="sum">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="sum" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+				 	
+	<context name="gx_reg">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="gx_reg" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+
+	<context name="gy_reg">
+		<numeric clsEffort="0.01" exp="p0" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p1" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p2" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p3" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p5" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p6" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p7" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="p8" loc="bdt"/>
+		<numeric clsEffort="0.01" exp="gy_reg" loc="c"/>
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->XP0)" /> 
+	</context>
+
+    <!--
+    -->
+</harm>
+
+
+

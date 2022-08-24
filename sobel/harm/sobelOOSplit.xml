@@ -1,0 +1,104 @@
+<harm>
+	<context name="axc_split">
+
+		<prop exp="p3[0]" loc="dt"/>
+		<prop exp="p3[1]" loc="dt"/>
+		<prop exp="p3[2]" loc="dt"/>
+		<prop exp="p3[3]" loc="dt"/>
+		<prop exp="p3[4]" loc="dt"/>
+		<prop exp="p3[5]" loc="dt"/>
+		<prop exp="p3[6]" loc="dt"/>
+		<prop exp="p3[7]" loc="dt"/>
+		<prop exp="p3[8]" loc="dt"/>
+		<prop exp="p7[0]" loc="dt"/>
+		<prop exp="p7[1]" loc="dt"/>
+		<prop exp="p7[2]" loc="dt"/>
+		<prop exp="p7[3]" loc="dt"/>
+		<prop exp="p7[4]" loc="dt"/>
+		<prop exp="p7[5]" loc="dt"/>
+		<prop exp="p7[6]" loc="dt"/>
+		<prop exp="p7[7]" loc="dt"/>
+		<prop exp="p7[8]" loc="dt"/>
+		<prop exp="p2[0]" loc="dt"/>
+		<prop exp="p2[1]" loc="dt"/>
+		<prop exp="p2[2]" loc="dt"/>
+		<prop exp="p2[3]" loc="dt"/>
+		<prop exp="p2[4]" loc="dt"/>
+		<prop exp="p2[5]" loc="dt"/>
+		<prop exp="p2[6]" loc="dt"/>
+		<prop exp="p2[7]" loc="dt"/>
+		<prop exp="p2[8]" loc="dt"/>
+		<prop exp="p6[0]" loc="dt"/>
+		<prop exp="p6[1]" loc="dt"/>
+		<prop exp="p6[2]" loc="dt"/>
+		<prop exp="p6[3]" loc="dt"/>
+		<prop exp="p6[4]" loc="dt"/>
+		<prop exp="p6[5]" loc="dt"/>
+		<prop exp="p6[6]" loc="dt"/>
+		<prop exp="p6[7]" loc="dt"/>
+		<prop exp="p6[8]" loc="dt"/>
+		<prop exp="p5[0]" loc="dt"/>
+		<prop exp="p5[1]" loc="dt"/>
+		<prop exp="p5[2]" loc="dt"/>
+		<prop exp="p5[3]" loc="dt"/>
+		<prop exp="p5[4]" loc="dt"/>
+		<prop exp="p5[5]" loc="dt"/>
+		<prop exp="p5[6]" loc="dt"/>
+		<prop exp="p5[7]" loc="dt"/>
+		<prop exp="p5[8]" loc="dt"/>
+		<prop exp="p1[0]" loc="dt"/>
+		<prop exp="p1[1]" loc="dt"/>
+		<prop exp="p1[2]" loc="dt"/>
+		<prop exp="p1[3]" loc="dt"/>
+		<prop exp="p1[4]" loc="dt"/>
+		<prop exp="p1[5]" loc="dt"/>
+		<prop exp="p1[6]" loc="dt"/>
+		<prop exp="p1[7]" loc="dt"/>
+		<prop exp="p1[8]" loc="dt"/>
+		<prop exp="p0[0]" loc="dt"/>
+		<prop exp="p0[1]" loc="dt"/>
+		<prop exp="p0[2]" loc="dt"/>
+		<prop exp="p0[3]" loc="dt"/>
+		<prop exp="p0[4]" loc="dt"/>
+		<prop exp="p0[5]" loc="dt"/>
+		<prop exp="p0[6]" loc="dt"/>
+		<prop exp="p0[7]" loc="dt"/>
+		<prop exp="p0[8]" loc="dt"/>
+		<prop exp="p8[0]" loc="dt"/>
+		<prop exp="p8[1]" loc="dt"/>
+		<prop exp="p8[2]" loc="dt"/>
+		<prop exp="p8[3]" loc="dt"/>
+		<prop exp="p8[4]" loc="dt"/>
+		<prop exp="p8[5]" loc="dt"/>
+		<prop exp="p8[6]" loc="dt"/>
+		<prop exp="p8[7]" loc="dt"/>
+		<prop exp="p8[8]" loc="dt"/>
+
+        <!--
+		<numeric clsEffort="0.01" exp="out" loc="c"/>
+        -->
+		<prop exp="out[0]" loc="c"/>
+		<prop exp="out[1]" loc="c"/>
+		<prop exp="out[2]" loc="c"/>
+		<prop exp="out[3]" loc="c"/>
+		<prop exp="out[4]" loc="c"/>
+		<prop exp="out[5]" loc="c"/>
+		<prop exp="out[6]" loc="c"/>
+		<prop exp="out[7]" loc="c"/>
+
+
+		<template dtLimits="6A,0E,O" exp="G({..&&..}|-> X(P0))" /> 
+        <!--
+		<template dtLimits="6A,0.1E" exp="G({..&&..}|-> X(P0))" /> 
+		<template dtLimits="3A,-0.1E" exp="G({..&&..}|-> X(!P0))" /> 
+        -->
+
+
+
+		<sort name="causality" exp="1-afct/traceLength"/>
+		<sort name="frequency" exp="atct/traceLength"/>
+	</context>
+</harm>
+
+
+

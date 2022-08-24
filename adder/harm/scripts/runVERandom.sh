@@ -1,0 +1,1 @@
+~/harm/build/varEstimator --technique "sa" --path outRandom/_/ass/default_ass.txt --clk clk --sa 0 --con --vcd ../modelsim/vcd/adder.vcd --oo --fd ../modelsim/vcd/random/ --vars ../modelsim/map/map.csv 
