@@ -26,8 +26,8 @@ module sobel_tb();
 
 	always @(posedge clk)
 	begin
-//if(count > 262144)
-if(count > 100)
+if(count > 262144)
+//if(count > 100)
 		begin
 			$finish;
 		end
