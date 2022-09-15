@@ -1,1 +1,0 @@
-~/harm/build/varEstimator --technique "sa" --path outPlane/_100/ass/axc_ass.txt --clk clk --sa 0 --con --vcd ../modelsim/vcd/plane100.vcd --cs 3000 --oo --fd ../modelsim/vcd/plane100/ --vars ../modelsim/map/map.csv 

@@ -25,6 +25,9 @@ third_party/z3/
 tests/bl_master/bl_master100k.vcd
 .DS_Store
 sobel/modelsim/work/*
+sobel/modelsim/imgs/planeBR/*
+sobel/modelsim/imgs/planeBR_cluster/*
+sobel/modelsim/imgs/planeLP/*
 sobel/modelsim/vcd/*
 adder/modelsim/work/*
 adder/modelsim/vcd/*

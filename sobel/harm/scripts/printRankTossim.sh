@@ -31,6 +31,6 @@ do
 done
 
 
-gnuplot -p -e "set datafile separator ';'; set style circle radius 1; set style fill solid; plot 'plot.csv' with circles lc 'blue' notitle"
+gnuplot -p -e "set datafile separator ';'; set style circle radius 1;set xlabel 'ranking';set ylabel 'ssim'; set style fill solid; plot 'plot.csv' with circles lc 'blue' notitle"
 
 rm plot.csv

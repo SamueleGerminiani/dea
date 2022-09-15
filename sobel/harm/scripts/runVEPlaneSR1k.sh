@@ -1,0 +1,1 @@
+~/harm/build/varEstimator --tech "sr" --ass-file outPlaneSR/_1k/ass/axc_ass.txt --clk clk --vcd ../modelsim/vcd/planeLP1k.vcd --cs 3000 --fd ../modelsim/vcd/planeLP1k/ --n-stm $1 --dump-to outPlaneSR/_1k/rank --cluster 10

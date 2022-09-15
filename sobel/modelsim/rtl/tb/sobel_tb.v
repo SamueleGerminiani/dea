@@ -10,8 +10,8 @@ module sobel_tb();
 	initial begin
 		clk = 1'b0;
 		count = 0;
-		in = $fopen("img/in/plane_gray_in.txt","r");	//enter input file name containing pixels
-		ot = $fopen("img/out/512x512sobel_out_nbits.txt","w");	//enter output file name
+		in = $fopen("IO/in/plane_gray_in.txt","r");	//enter input file name containing pixels
+		ot = $fopen("IO/out/512x512sobel_out_nbits.txt","w");	//enter output file name
 		#1 p0 = 8'b0; p1 = 8'b0; p2 = 8'b0; p3 = 8'b0; p4 = 8'b0; p5 = 8'b0; p6 = 8'b0; p7 = 8'b0;
 		#1;
 		//repeat(262144) begin	//enter number of pixels in image
@@ -27,7 +27,8 @@ module sobel_tb();
 	always @(posedge clk)
 	begin
 if(count > 262144)
-//if(count > 100)
+//if(count > 1000)
+//if(count > 10)
 		begin
 			$finish;
 		end

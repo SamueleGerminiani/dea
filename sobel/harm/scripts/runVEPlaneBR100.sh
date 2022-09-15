@@ -1,0 +1,1 @@
+~/harm/build/varEstimator --tech "vbr" --ass-file outPlaneBR/_100/ass/axc_ass.txt --clk clk --vcd ../modelsim/vcd/planeBR100.vcd --cs 3000 --fd ../modelsim/vcd/planeBR100/ --var-list ../modelsim/map/varList.csv --dump-to outPlaneBR/_100/rank/ --cluster -1
