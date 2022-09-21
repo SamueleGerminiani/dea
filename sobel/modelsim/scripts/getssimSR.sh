@@ -23,7 +23,7 @@ mkdir imgs/planeSR
 #original
 rm -rf work
 vlib work
-vlog rtl/tb/sobel_tb.v rtl/template/sobel_sr_template.v rtl/utils/*.v
+vlog +incdir+rtl/template/utilsSR rtl/tb/sobel_tb.v rtl/template/sobel_sr_template.v rtl/utils/*.v
 vsim work.sobel_tb -c -voptargs="+acc" -do "run -all; quit" 
 mv IO/out/512x512sobel_out_nbits.txt imgs/planeSR/golden.txt
 

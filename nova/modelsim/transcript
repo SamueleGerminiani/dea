@@ -1,0 +1,101 @@
+# vsim work.nova_tb -c -voptargs="+acc" -do "vcd file vcd/latest/nova.vcd; vcd add nova_tb/nova/*; run -all; quit" 
+# Start time: 10:45:06 on Sep 20,2022
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Note: (vopt-143) Recognized 13 FSMs in module "BitStream_parser_FSM(fast)".
+# //  ModelSim SE-64 2019.4 Oct 15 2019 Linux 5.8.0-50-generic
+# //
+# //  Copyright 1991-2019 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading work.nova_tb(fast)
+# Loading work.Beha_BitStream_ram(fast)
+# Loading work.ext_frame_RAM0_wrapper(fast)
+# Loading work.ext_frame_RAM1_wrapper(fast)
+# Loading work.nova(fast)
+# Loading work.BitStream_controller(fast)
+# Loading work.BitStream_buffer(fast)
+# Loading work.bitstream_gclk_gen(fast)
+# Loading work.BitStream_parser_FSM(fast)
+# Loading work.pc_decoding(fast)
+# Loading work.heading_one_detector(fast)
+# Loading work.exp_golomb_decoding(fast)
+# Loading work.dependent_variable_decoding(fast)
+# Loading work.QP_decoding(fast)
+# Loading work.CodedBlockPattern_decoding(fast)
+# Loading work.Intra4x4_PredMode_decoding(fast)
+# Loading work.ram_async_1r_sync_1w(fast)
+# Loading work.Inter_mv_decoding(fast)
+# Loading work.ram_async_1r_sync_1w(fast__1)
+# Loading work.ram_async_1r_sync_1w(fast__2)
+# Loading work.syntax_decoding(fast)
+# Loading work.cavlc_decoder(fast)
+# Loading work.nC_decoding(fast)
+# Loading work.ram_async_1r_sync_1w(fast__3)
+# Loading work.ram_async_1r_sync_1w(fast__4)
+# Loading work.NumCoeffTrailingOnes_decoding(fast)
+# Loading work.level_decoding(fast)
+# Loading work.total_zeros_decoding(fast)
+# Loading work.run_decoding(fast)
+# Loading work.end_of_blk_decoding(fast)
+# Loading work.cavlc_consumed_bits_decoding(fast)
+# Loading work.bs_decoding(fast)
+# Loading work.mv_diff_GE4(fast)
+# Loading work.reconstruction(fast)
+# Loading work.rec_gclk_gen(fast)
+# Loading work.hybrid_pipeline_ctrl(fast)
+# Loading work.IQIT(fast)
+# Loading work.butterfly(fast)
+# Loading work.mod6(fast)
+# Loading work.div6(fast)
+# Loading work.rescale_shift(fast)
+# Loading work.Intra_pred_top(fast)
+# Loading work.Intra_pred_pipeline(fast)
+# Loading work.plane_HV_precomputation(fast)
+# Loading work.plane_bc_precomputation(fast)
+# Loading work.plane_a_precomputation(fast)
+# Loading work.main_seed_precomputation(fast)
+# Loading work.Intra_pred_reg_ctrl(fast)
+# Loading work.Intra_pred_PE(fast)
+# Loading work.PE(fast)
+# Loading work.ram_sync_1r_sync_1w(fast)
+# Loading work.Inter_pred_top(fast)
+# Loading work.Inter_pred_pipeline(fast)
+# Loading work.Inter_pred_reg_ctrl(fast)
+# Loading work.Inter_pred_sliding_window(fast)
+# Loading work.Inter_pred_LPE(fast)
+# Loading work.filterV_6tap(fast)
+# Loading work.filterH_6tap(fast)
+# Loading work.bilinear(fast)
+# Loading work.Inter_pred_CPE(fast)
+# Loading work.CPE(fast)
+# Loading work.CPE_base(fast)
+# Loading work.sum(fast)
+# Loading work.sum_PE(fast)
+# Loading work.DF_top(fast)
+# Loading work.DF_pipeline(fast)
+# Loading work.absolute(fast)
+# Loading work.clip_to_c(fast)
+# Loading work.bs4_strong_FIR(fast)
+# Loading work.bs4_weak_FIR(fast)
+# Loading work.DF_reg_ctrl(fast)
+# Loading work.DF_mem_ctrl(fast)
+# Loading work.ram_sync_1r_sync_1w(fast__1)
+# Loading work.ram_sync_1r_sync_1w(fast__2)
+# Loading work.rec_DF_RAM_ctrl(fast)
+# Loading work.ram_sync_1r_sync_1w(fast__3)
+# Loading work.ext_RAM_ctrl(fast)
+# vcd file vcd/latest/nova.vcd
+#  vcd add nova_tb/nova/*
+#  run -all
+# ** Note: $finish    : rtl/utils/ext_frame_RAM0_wrapper.v(80)
+#    Time: 39010240 ns  Iteration: 1  Instance: /nova_tb/ext_frame_RAM0_wrapper
+# End time: 10:45:07 on Sep 20,2022, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0

@@ -1,0 +1,16 @@
+<harm>
+    <context name="axc">
+        <numeric clsEffort="0.01" exp="x" loc="dt"/>
+        <numeric clsEffort="0.01" exp="y" loc="dt"/>
+        <numeric clsEffort="0.01" exp="theta1" loc="c"/>
+        <numeric clsEffort="0.01" exp="theta2" loc="c"/>
+        <template bdtLimits="2A,0.1E" exp="G({..&&..}|->X[90](P0 && P1))" /> 
+        <sort name="frequency" exp="atct/traceLength"/>
+        <sort name="causality" exp="1-afct/traceLength"/>
+    </context>
+
+
+</harm>
+
+
+

@@ -1,0 +1,36 @@
+<harm>
+    <context name="axc">
+
+        <numeric clsEffort="0.1" exp="BitStream_ram_addr" loc="c"/>
+        <numeric clsEffort="0.1" exp="pic_num" loc="c"/>
+        <numeric clsEffort="0.1" exp="ext_frame_RAM0_addr" loc="c"/>
+        <numeric clsEffort="0.1" exp="ext_frame_RAM1_addr" loc="c"/>
+        <numeric clsEffort="0.1" exp="dis_frame_RAM_din" loc="c"/>
+        <prop exp="BitStream_ram_ren" loc="c"/>
+        <prop exp="ext_frame_RAM0_cs_n" loc="c"/>
+        <prop exp="ext_frame_RAM0_wr" loc="c"/>
+        <prop exp="ext_frame_RAM1_cs_n" loc="c"/>
+        <prop exp="ext_frame_RAM1_wr" loc="c"/>
+        <prop exp="slice_header_s6" loc="c"/>
+
+        <numeric clsEffort="0.1" exp="BitStream_buffer_input" loc="dt"/>
+        <numeric clsEffort="0.1" exp="ext_frame_RAM0_data" loc="dt"/>
+        <numeric clsEffort="0.1" exp="ext_frame_RAM1_data" loc="dt"/>
+
+        <prop exp="pin_disable_DF" loc="dt"/>
+        <prop exp="freq_ctrl0" loc="dt"/>
+        <prop exp="freq_ctrl1" loc="dt"/>
+
+
+        <template bdtLimits="3A,0E" exp="G({..&&..}|->X[100](P0))" /> 
+        <template bdtLimits="3A,-0.1E" exp="G({..##100..}|->X[100](P0))" /> 
+
+        <sort name="frequency" exp="atct/traceLength"/>
+        <sort name="causality" exp="1-afct/traceLength"/>
+    </context>
+
+
+</harm>
+
+
+

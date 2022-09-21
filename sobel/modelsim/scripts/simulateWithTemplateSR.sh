@@ -7,7 +7,7 @@ mkdir vcd/latest
 rm -rf work
 vcd="sobel_tb/U0/*"
 vlib work
-vlog rtl/tb/sobel_tb.v rtl/template/sobel_sr_template.v rtl/utils/*.v
+vlog +incdir+rtl/template/utilsSR rtl/tb/sobel_tb.v rtl/template/sobel_sr_template.v rtl/template/utilsSR/*.v
 vsim work.sobel_tb -c -voptargs="+acc" -do "vcd file vcd/latest/sobel.vcd; vcd add $vcd; run -all; quit" 
 
 nStatements=$1

@@ -1,0 +1,34 @@
+# vsim -quiet work.UBBKA_31_0_31_0_tb -c -voptargs="+acc" -do "vcd file vcd/latest/bk.vcd; vcd add -r UBBKA_31_0_31_0_tb/*; run -all; quit" 
+# Start time: 16:44:20 on Sep 19,2022
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2019.4 Oct 15 2019 Linux 5.8.0-50-generic
+# //
+# //  Copyright 1991-2019 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# vcd file vcd/latest/bk.vcd
+#  vcd add -r UBBKA_31_0_31_0_tb/*
+#  run -all
+# Time =                    0, x=         x, y=         x, s=         x
+# Time =                    5, x= 303379748, y=3230228097, s=3533607845
+# Time =                   15, x=2223298057, y=2985317987, s=5208616044
+# Time =                   25, x= 112818957, y=1189058957, s=1301877914
+# Time =                   35, x=2999092325, y=2302104082, s=5301196407
+# Time =                   45, x=  15983361, y= 114806029, s= 130789390
+# Time =                   55, x= 992211318, y= 512609597, s=1504820915
+# Time =                   65, x=1993627629, y=1177417612, s=3171045241
+# Time =                   75, x=2097015289, y=3812041926, s=5909057215
+# Time =                   85, x=3807872197, y=3574846122, s=7382718319
+# Time =                   95, x=1924134885, y=3151131255, s=5075266140
+# ** Note: $finish    : rtl/utils/UBBKA_31_0_31_0_tb.v(18)
+#    Time: 105 ns  Iteration: 0  Instance: /UBBKA_31_0_31_0_tb
+# End time: 16:44:20 on Sep 19,2022, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0

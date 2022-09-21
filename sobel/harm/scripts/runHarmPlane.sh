@@ -1,1 +1,1 @@
-~/harm/build/harm --vcd ../modelsim/vcd/planeBR.vcd --clk clk --conf sobelOO.xml --dont-fill-ass --dump-to outPlaneBR/_/latest/
+~/harm/build/harm --vcd ../modelsim/vcd/planeVBR.vcd --clk clk --conf sobelOO.xml --dont-fill-ass --dump-to outPlaneVBR/_/latest/

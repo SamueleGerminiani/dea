@@ -1,0 +1,25 @@
+[*]
+[*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
+[*] Mon Sep 19 12:13:01 2022
+[*]
+[dumpfile] "/home/sam/axc/inversek2j/modelsim/vcd/latest/inv_kin.vcd"
+[dumpfile_mtime] "Mon Sep 19 12:12:50 2022"
+[dumpfile_size] 10571381
+[savefile] "/home/sam/axc/inversek2j/modelsim/sf.gtkw"
+[timestart] 0
+[size] 1850 762
+[pos] -1 -1
+*-19.000000 7761000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 214
+[signals_width] 234
+[sst_expanded] 1
+[sst_vpaned_height] 209
+@25
+inv_kin_tb.clock
+inv_kin_tb.rst
+#{inv_kin_tb.theta1[31:0]} inv_kin_tb.theta1[31] inv_kin_tb.theta1[30] inv_kin_tb.theta1[29] inv_kin_tb.theta1[28] inv_kin_tb.theta1[27] inv_kin_tb.theta1[26] inv_kin_tb.theta1[25] inv_kin_tb.theta1[24] inv_kin_tb.theta1[23] inv_kin_tb.theta1[22] inv_kin_tb.theta1[21] inv_kin_tb.theta1[20] inv_kin_tb.theta1[19] inv_kin_tb.theta1[18] inv_kin_tb.theta1[17] inv_kin_tb.theta1[16] inv_kin_tb.theta1[15] inv_kin_tb.theta1[14] inv_kin_tb.theta1[13] inv_kin_tb.theta1[12] inv_kin_tb.theta1[11] inv_kin_tb.theta1[10] inv_kin_tb.theta1[9] inv_kin_tb.theta1[8] inv_kin_tb.theta1[7] inv_kin_tb.theta1[6] inv_kin_tb.theta1[5] inv_kin_tb.theta1[4] inv_kin_tb.theta1[3] inv_kin_tb.theta1[2] inv_kin_tb.theta1[1] inv_kin_tb.theta1[0]
+#{inv_kin_tb.theta2[31:0]} inv_kin_tb.theta2[31] inv_kin_tb.theta2[30] inv_kin_tb.theta2[29] inv_kin_tb.theta2[28] inv_kin_tb.theta2[27] inv_kin_tb.theta2[26] inv_kin_tb.theta2[25] inv_kin_tb.theta2[24] inv_kin_tb.theta2[23] inv_kin_tb.theta2[22] inv_kin_tb.theta2[21] inv_kin_tb.theta2[20] inv_kin_tb.theta2[19] inv_kin_tb.theta2[18] inv_kin_tb.theta2[17] inv_kin_tb.theta2[16] inv_kin_tb.theta2[15] inv_kin_tb.theta2[14] inv_kin_tb.theta2[13] inv_kin_tb.theta2[12] inv_kin_tb.theta2[11] inv_kin_tb.theta2[10] inv_kin_tb.theta2[9] inv_kin_tb.theta2[8] inv_kin_tb.theta2[7] inv_kin_tb.theta2[6] inv_kin_tb.theta2[5] inv_kin_tb.theta2[4] inv_kin_tb.theta2[3] inv_kin_tb.theta2[2] inv_kin_tb.theta2[1] inv_kin_tb.theta2[0]
+inv_kin_tb.x[31:0]
+inv_kin_tb.y[31:0]
+[pattern_trace] 1
+[pattern_trace] 0
