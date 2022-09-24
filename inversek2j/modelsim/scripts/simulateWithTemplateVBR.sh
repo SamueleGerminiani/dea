@@ -1,14 +1,14 @@
 #!/bin/bash 
 #$1 is the map file
-rm -rf vcd/latest
-mkdir vcd/latest
+rm -rf csv/latest
+mkdir -p csv/latest
 
 #original
 rm -rf work
-vcd="inv_kin_tb/*"
 vlib work
 vlog -quiet rtl/utils/*.v rtl/template/inv_kin_vbr_template.v rtl/tb/inv_kin_tb_new.v
-vsim -quiet work.inv_kin_tb -c -voptargs="+acc" -do "vcd file vcd/latest/inv_kin.vcd; vcd add $vcd; run -all; quit" 
+vsim -quiet work.inv_kin_tb -c -voptargs="+acc" -do "run -all; quit" 
+mv IO/out/trace.csv csv/latest/inv_kin.csv
 
 #with sa 0
 while IFS=, read -r var size 
@@ -24,6 +24,7 @@ do
         rm -rf work
         vlib work
         vlog -quiet +define+bit=""$bit"" +define+"$var" rtl/utils/*.v rtl/template/inv_kin_vbr_template.v rtl/tb/inv_kin_tb_new.v
-        vsim -quiet work.inv_kin_tb -c -voptargs="+acc" -do "vcd file vcd/latest/"$var[$bit]".vcd; vcd add $vcd; run -all; quit"
+        vsim -quiet work.inv_kin_tb -c -voptargs="+acc" -do "run -all; quit"
+        mv IO/out/trace.csv csv/latest/"$var[$bit]".csv
     done
 done < "$1"

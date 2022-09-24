@@ -1,5 +1,5 @@
 # vsim work.adder_tb -c -voptargs="+acc" -do "vcd file vcd/latest/b[8].vcd; vcd add adder_tb/*; run -all; quit" 
-# Start time: 12:55:46 on Aug 24,2022
+# Start time: 09:46:58 on Sep 22,2022
 # ** Note: (vsim-3812) Design is being optimized...
 # //  ModelSim SE-64 2019.4 Oct 15 2019 Linux 5.8.0-50-generic
 # //
@@ -21,5 +21,5 @@
 #  run -all
 # ** Note: $finish    : rtl/tb/adder_tb.v(19)
 #    Time: 10010 ns  Iteration: 1  Instance: /adder_tb
-# End time: 12:55:47 on Aug 24,2022, Elapsed time: 0:00:01
+# End time: 09:46:58 on Sep 22,2022, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0

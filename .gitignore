@@ -33,6 +33,11 @@ sobel/modelsim/imgs/*
 adder/modelsim/work/*
 adder/modelsim/vcd/*
 
+inversek2j/modelsim/work/*
+inversek2j/modelsim/theta/sr/*
+inversek2j/modelsim/theta/vbr/*
+inversek2j/modelsim/csv/*
+
 brent-kung/modelsim/vcd/*
 brent-kung/modelsim/work/*
 brent-kung/modelsim/vcd/*

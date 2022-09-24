@@ -1,1 +1,1 @@
-~/harm/build/varEstimator --technique "sa" --path outRandom/_/ass/default_ass.txt --clk clk --sa 0 --con --vcd ../modelsim/vcd/adder.vcd --oo --fd ../modelsim/vcd/random/ --vars ../modelsim/map/map.csv 
+~/harm/build/varEstimator --tech "vbr" --ass-file outRandom/_/ass/default_ass.txt --clk clk --vcd ../modelsim/vcd/adder.vcd --fd ../modelsim/vcd/vbr/ --var-list ../modelsim/map/varList.csv --dump-to outRandom/_/rank/ --cluster -1
