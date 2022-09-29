@@ -11,7 +11,7 @@ vsim -quiet work.inv_kin_tb -c -voptargs="+acc" -do "run -all; quit"
 mv IO/out/trace.csv csv/latest/inv_kin.csv
 
 nStatements=$1
-##74
+##64
 for ((i=0;i<nStatements;i++)); do
     rm -rf work
     vlib work

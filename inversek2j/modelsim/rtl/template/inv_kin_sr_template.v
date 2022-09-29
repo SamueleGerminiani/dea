@@ -39,18 +39,18 @@ module inv_kin(x, y, theta1, theta2, clock, rst);
 	parameter const_2 = `BIT_WIDTH'b00000000100001000000000000000000;  // 11*12*2
 
 
-		`SR(s0,qmult #(`FRACTIONS,`BIT_WIDTH) x_multiplier(.i_multiplicand(x), .i_multiplier(x), .o_result(x_sqr_reg), .ovr(overflow_flag), .clk(clock), .rst(rst));,assign x_sqr_reg=0;assign overflow_flag=0;)
+		`SR(NONOs0,qmult #(`FRACTIONS,`BIT_WIDTH) x_multiplier(.i_multiplicand(x), .i_multiplier(x), .o_result(x_sqr_reg), .ovr(overflow_flag), .clk(clock), .rst(rst));,assign x_sqr_reg=0;assign overflow_flag=0;)
 		`SR(s1,qmult #(`FRACTIONS,`BIT_WIDTH) y_multiplier(.i_multiplicand(y), .i_multiplier(y), .o_result(y_sqr_reg), .ovr(overflow_flag), .clk(clock), .rst(rst));,assign y_sqr_reg=0;assign overflow_flag=0;)
 		always @ (posedge clock) begin
-			`SR(s2,x_sqr <= x_sqr_reg;,assign x_sqr=0;)
-			`SR(s3,y_sqr <= y_sqr_reg;,assign  y_sqr =0;)
-			`SR(s4,sin12 <= sin12_reg;,assign  sin12 =0;)
-			`SR(s5,cos12 <= cos12_reg;,assign  cos12 =0;)
-			`SR(s6,part_x<= part_x_reg;,assign part_x=0;)
-			`SR(s7,part_y<= part_y_reg;,assign part_y=0;)
-			`SR(s8,part_1<= part_1_reg;,assign part_1=0;)
-			`SR(s9,sin_theta2 <= sin_theta2_reg;,assign sin_theta2=0;)
-			`SR(s10,cos_theta2 <= cos_theta2_reg;,assign cos_theta2=0;)
+			`SR(s2,x_sqr <= x_sqr_reg;, x_sqr <=0;)
+			`SR(s3,y_sqr <= y_sqr_reg;, y_sqr <=0;)
+			`SR(s4,sin12 <= sin12_reg;, sin12 <=0;)
+			`SR(s5,cos12 <= cos12_reg;, cos12 <=0;)
+			`SR(s6,part_x<= part_x_reg;,part_x<=0;)
+			`SR(s7,part_y<= part_y_reg;,part_y<=0;)
+			`SR(s8,part_1<= part_1_reg;,part_1<=0;)
+			`SR(s9,sin_theta2 <= sin_theta2_reg;,sin_theta2<=0;)
+			`SR(s10,cos_theta2 <= cos_theta2_reg;,cos_theta2<=0;)
 		end
 		`SR(s11,qadd #(`FRACTIONS,`BIT_WIDTH) xy_adder(.a(x_sqr), .b(y_sqr), .c(xy_sum));,assign xy_sum=0;)
 		`SR(s12,qadd #(`FRACTIONS,`BIT_WIDTH) num_adder(.a(const_1), .b(xy_sum), .c(theta2_num));,assign theta2_num=0;)
@@ -63,22 +63,21 @@ module inv_kin(x, y, theta1, theta2, clock, rst);
 		`SR(s15,cos_lut U1 (theta2,cos_theta2_reg);,assign cos_theta2_reg=0;)
 		`SR(s16,sin_lut U2 (theta2,sin_theta2_reg);,assign sin_theta2_reg=0;)
 		`SR(s17,qmult #(`FRACTIONS,`BIT_WIDTH) cos_multiplier(.i_multiplicand(cos_theta2), .i_multiplier(`BIT_WIDTH'b00000000000001100000000000000000), .o_result(cos12_reg), .ovr(overflow_flag), .clk(clock), .rst(rst));		,assign cos12_reg=0;assign overflow_flag=0;)
-		`SR(s18,qmult #(`FRACTIONS,`BIT_WIDTH) sin_multiplier(.i_multiplicand(sin_theta2), .i_multiplier(`BIT_WIDTH'b00000000000001100000000000000000), .o_result(sin12_reg), .ovr(overflow_flag), .clk(clock), .rst(rst));,assign var=0;)
+		`SR(s18,qmult #(`FRACTIONS,`BIT_WIDTH) sin_multiplier(.i_multiplicand(sin_theta2), .i_multiplier(`BIT_WIDTH'b00000000000001100000000000000000), .o_result(sin12_reg), .ovr(overflow_flag), .clk(clock), .rst(rst));,assign sin12_reg=0;)
 		`SR(s19,qadd #(`FRACTIONS,`BIT_WIDTH) n_adder(.a(cos12), .b(`BIT_WIDTH'b00000000000001011000000000000000), .c(part_1_reg));,assign part_1_reg=0;)
 		`SR(s20,qmult #(`FRACTIONS,`BIT_WIDTH) multiplier_1(.i_multiplicand(part_1), .i_multiplier(y), .o_result(part_y_reg), .ovr(overflow_flag), .clk(clock), .rst(rst));,assign part_y_reg=0;assign overflow_flag=0;)
 		`SR(s21,qmult #(`FRACTIONS,`BIT_WIDTH) multiplier_2(.i_multiplicand(sin12), .i_multiplier(x), .o_result(part_x_reg), .ovr(overflow_flag), .clk(clock), .rst(rst));,assign part_x_reg=0;assign overflow_flag=0;)
 
 	always@(part_x) begin
 		if (part_x[31]) begin
-			`SR(s22,signed_bit=1'b0;,assign signed_bit=0;)
+			`SR(s22,signed_bit=1'b0;,signed_bit=0;)
 		end
 		else begin
-			`SR(s23,signed_bit=1'b1;,assign signed_bit=0;)
+			`SR(s23,signed_bit=1'b1;,signed_bit=0;)
 		end
 	end
 		`SR(s24,qadd #(`FRACTIONS,`BIT_WIDTH) adder_123 (.a({signed_bit,part_x[30:0]}), .b(part_y), .c(theta1_num));,assign theta1_num=0;)
 		`SR(s25,qdiv #(`FRACTIONS,`BIT_WIDTH) m_divider(.i_dividend(theta1_num), .i_divisor(xy_sum), .i_start(1'b1), .i_clk(clock), .rst(rst), .o_quotient_out(theta1_in), .o_complete(), .o_overflow());,assign theta1_in=0;)
 		`SR(s26,asin_lut U3 (theta1_in,theta1);,assign theta1=0;)
-
 endmodule
 

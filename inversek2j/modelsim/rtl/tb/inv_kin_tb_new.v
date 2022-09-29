@@ -16,8 +16,8 @@ module inv_kin_tb;
         f = $fopen("IO/out/output.csv","w");
         csv = $fopen("IO/out/trace.csv","w");
         $fwrite(f,"x,y,theta1,theta2\n");
-        //$fwrite(csv,"int x;int y;int theta1;int theta2\n");
-        $fwrite(csv,"double x;double y;double theta1;double theta2\n");
+        $fwrite(csv,"unsigned int x;unsigned int y;unsigned int theta1;unsigned int theta2\n");
+        //$fwrite(csv,"double x;double y;double theta1;double theta2\n");
 		#2 rst = 0;
 		#100 rst =  1;
 		#10 rst = 0;
@@ -28,16 +28,12 @@ module inv_kin_tb;
 		    y = $urandom(7);
 
         for (i = 0; i < 1000; i=i+1) begin
-		    //x = {$urandom % 100} << `FRACTIONS; 
-		    //y = {$urandom % 100} << `FRACTIONS; 
 		    x = $urandom; 
 		    y = $urandom; 
-            //$display("%b.%b,%b.%b,%b.%b,%b.%b,",theta1[31:15],theta1[14:0],theta2[31:15],theta2[14:0],x[31:15],x[14:0],y[31:15],y[14:0]);
             #10000;
-            //$fwrite(f,"%d,%d,%d,%d\n",x,y,theta1,theta2);
             $fwrite(f,"%0d.%0d,%0d.%0d,%0d.%0d,%0d.%0d\n",x[31:15],x[14:0],y[31:15],y[14:0],theta1[31:15],theta1[14:0],theta2[31:15],theta2[14:0]);
-            //$fwrite(csv,"%d;%d;%d;%d\n",x,y,theta1,theta2);
-            $fwrite(csv,"%0d.%0d;%0d.%0d;%0d.%0d;%0d.%0d\n",x[31:15],x[14:0],y[31:15],y[14:0],theta1[31:15],theta1[14:0],theta2[31:15],theta2[14:0]);
+           $fwrite(csv,"%d;%d;%d;%d\n",x,y,theta1,theta2);
+         //   $fwrite(csv,"%0d.%0d;%0d.%0d;%0d.%0d;%0d.%0d\n",x[31:15],x[14:0],y[31:15],y[14:0],theta1[31:15],theta1[14:0],theta2[31:15],theta2[14:0]);
         end
 
     $fclose(f); 

@@ -19,14 +19,15 @@ done < "$1"
 while IFS=',' read -r var2 ssim 
 do
     #remove hidden char
-    ssim=${ssim::-1}
+    ssim=${ssim//[^[:alnum:]^[._]]/}
+
     if [ "$var2" = "var" ]; then
         continue
     fi
     sTss[$var2]=$ssim
 done < "$2"
 
-touch plot.csv
+rm plot.csv
 
 for ((j=0;j<i;j++)); do
     var=${sTr[$j]}
@@ -34,10 +35,13 @@ for ((j=0;j<i;j++)); do
     if [ ! -z "$ssim" ]
     then
         echo "$j, $ssim" >> "plot.csv"
+    else
+        echo "Error!" 1>&2
+        exit 64
     fi
 done
 
 
 gnuplot -p -e "set datafile separator ','; set style circle radius 1;set xlabel 'ranking';set ylabel 'ssim'; set style fill solid; plot 'plot.csv' with circles lc 'blue' notitle"
 
-#rm plot.csv
+rm plot.csv

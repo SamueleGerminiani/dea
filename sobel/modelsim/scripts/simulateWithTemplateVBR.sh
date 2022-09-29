@@ -13,8 +13,7 @@ vsim work.sobel_tb -c -voptargs="+acc" -do "vcd file vcd/latest/sobel.vcd; vcd a
 #with sa 0
 while IFS=, read -r var size 
 do
-    #remove hidden char
-    size=${size::-1}
+    size=${size//[^[:alnum:]^[._]]/}
 
     if ["$var" = "var" && "$size" = "size" ]; then
         continue

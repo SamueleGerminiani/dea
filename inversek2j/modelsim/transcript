@@ -1,5 +1,5 @@
 # vsim -quiet work.inv_kin_tb -c -voptargs="+acc" -do "run -all; quit" 
-# Start time: 11:31:51 on Sep 24,2022
+# Start time: 10:15:07 on Sep 25,2022
 # ** Note: (vsim-3812) Design is being optimized...
 # //  ModelSim SE-64 2019.4 Oct 15 2019 Linux 5.8.0-50-generic
 # //
@@ -15,7 +15,7 @@
 # //  18 U.S.C. Section 1905.
 # //
 # run -all
-# ** Note: $finish    : rtl/tb/inv_kin_tb_new.v(45)
+# ** Note: $finish    : rtl/tb/inv_kin_tb_new.v(41)
 #    Time: 10000112 ns  Iteration: 0  Instance: /inv_kin_tb
-# End time: 11:31:53 on Sep 24,2022, Elapsed time: 0:00:02
+# End time: 10:15:10 on Sep 25,2022, Elapsed time: 0:00:03
 # Errors: 0, Warnings: 0

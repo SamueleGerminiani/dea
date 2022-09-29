@@ -8,7 +8,7 @@ collectListTheta () {
     while IFS=, read -r x y theta1 theta2
     do
         #remove hidden char
-        theta2=${theta2::-1}
+        theta2=${theta2//[^[:alnum:]^[._]]/}
 
         if [ "$theta1" = "theta1" ]; then
             continue
@@ -49,17 +49,17 @@ for ((j=0;j<nStatements;j++)); do
     vlog -quiet +define+"s$j" +incdir+rtl/template/utilsSR rtl/template/utilsSR/*.v rtl/template/inv_kin_sr_template.v rtl/tb/inv_kin_tb_new.v
     vsim -quiet work.inv_kin_tb -c -voptargs="+acc" -do "run -all; quit"
     mv IO/out/output.csv theta/sr/"s$j.csv"
-    collectListTheta "theta/sr/s$j.csv"
     mv IO/out/trace.csv csv/latest/"s$j.csv"
+    collectListTheta "theta/sr/s$j.csv"
     theta1FList=(${retTheta1List[*]})
     theta2FList=(${retTheta2List[*]})
 
     final=0
     for ((i=0;i<retNList;i++)); do
-        theta1RErr=$(awk -F'\t' "function abs(x){return ((x < 0.0) ? -x : x)} BEGIN{ print abs(${theta1GoldenList[$i]}-${theta1FList[$i]})/(${theta1GoldenList[$i]})}")
-        theta2RErr=$(awk -F'\t' "function abs(x){return ((x < 0.0) ? -x : x)} BEGIN{ print abs(${theta2GoldenList[$i]}-${theta2FList[$i]})/(${theta2GoldenList[$i]})}")
-        #echo "abs(${theta1GoldenList[$i]}-${theta1FList[$i]})/${theta1GoldenList[$i]}"
-        #echo "$theta1RErr, $theta2RErr"
+        #theta1RErr=$(awk -F'\t' "function abs(x){return ((x < 0.0) ? -x : x)} BEGIN{ print abs(${theta1GoldenList[$i]}-${theta1FList[$i]})/(${theta1GoldenList[$i]})}")
+        theta1RErr=$(awk -F'\t' "function abs(x){return ((x < 0.0) ? -x : x)} BEGIN{ print abs(${theta1GoldenList[$i]}-${theta1FList[$i]})}")
+        #theta2RErr=$(awk -F'\t' "function abs(x){return ((x < 0.0) ? -x : x)} BEGIN{ print abs(${theta2GoldenList[$i]}-${theta2FList[$i]})/(${theta2GoldenList[$i]})}")
+        theta2RErr=$(awk -F'\t' "function abs(x){return ((x < 0.0) ? -x : x)} BEGIN{ print abs(${theta2GoldenList[$i]}-${theta2FList[$i]})}")
 
         if [ "$theta1RErr" != "0" ] || [ "$theta2RErr" != "0" ]; then
             thetaAVGErr=$(awk "BEGIN{ print ($theta1RErr+$theta2RErr)/2}")

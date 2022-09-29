@@ -2,8 +2,8 @@
     <context name="axc">
         <numeric clsEffort="0.05" exp="x" loc="dt"/>
         <numeric clsEffort="0.05" exp="y" loc="dt"/>
-        <numeric clsEffort="0.05" exp="theta1" loc="c"/>
-        <numeric clsEffort="0.05" exp="theta2" loc="c"/>
+        <numeric clsEffort="0.001" exp="theta1" loc="c"/>
+        <numeric clsEffort="0.001" exp="theta2" loc="c"/>
         <!--
         -->
         <template bdtLimits="2A,-0.1E" exp="G({..&&..}|->(P0 && P1))" /> 

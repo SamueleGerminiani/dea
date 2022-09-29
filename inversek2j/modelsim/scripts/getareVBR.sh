@@ -8,8 +8,7 @@ collectListTheta () {
     retNList=0
     while IFS=, read -r x y theta1 theta2
     do
-        #remove hidden char
-        theta2=${theta2::-1}
+        theta2=${theta2//[^[:alnum:]^[._]]/}
 
         if [ "$theta1" = "theta1" ]; then
             continue
@@ -44,8 +43,7 @@ touch vbr.csv
 echo "var, rae" >> "vbr.csv"
 while IFS=, read -r var size 
 do
-    #remove hidden char
-    size=${size::-1}
+    size=${size//[^[:alnum:]^[._]]/}
 
     if [ "$size" = "size" ]; then
         continue

@@ -30,8 +30,7 @@ mv IO/out/512x512sobel_out_nbits.txt imgs/planeVBR/golden.txt
 #with sa 0
 while IFS=, read -r var size 
 do
-    #remove hidden char
-    size=${size::-1}
+    size=${size//[^[:alnum:]^[._]]/}
 
     if ["$var" = "var" && "$size" = "size" ]; then
         continue
@@ -55,8 +54,7 @@ fi
 
     while IFS=, read -r var size
     do
-        #remove hidden char
-        size=${size::-1}
+        size=${size//[^[:alnum:]^[._]]/}
 
         if ["$var" = "var" && "$size" = "size" ]; then
             continue
@@ -72,8 +70,7 @@ rm ssimVBR.csv
 
 while IFS=, read -r var size
 do
-    #remove hidden char
-    size=${size::-1}
+    size=${size//[^[:alnum:]^[._]]/}
 
     if ["$var" = "var" && "$size" = "size" ]; then
         continue

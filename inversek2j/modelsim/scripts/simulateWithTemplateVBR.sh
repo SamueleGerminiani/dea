@@ -13,8 +13,8 @@ mv IO/out/trace.csv csv/latest/inv_kin.csv
 #with sa 0
 while IFS=, read -r var size 
 do
-    #remove hidden char
-    size=${size::-1}
+
+    size=${size//[^[:alnum:]^[._]]/}
 
     if [ "$size" = "size" ]; then
         continue
