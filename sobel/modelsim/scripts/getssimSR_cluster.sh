@@ -1,90 +1,143 @@
+#!/bin/bash 
+
+#parameters
+nStatements=38
+clusterFile="../harm/outSR/rank/rank_sr.csv"
+src="rtl/template/sobel_sr_template.v rtl/template/utilsSR/*.v"
+tb="rtl/tb/sobel_tb.v"
+include="+incdir+rtl/template/utilsSR"
+top="sobel_tb"
 
 
+function simulateCluster() {
 
+    local tokenList=$1
+    local clusterName=$2
+    local compDefine=""
 
-
-
-
-
-
-if [ -z "$1" ]
-then
-    echo "Must give the map cluster file"
-fi
-
-#read map cluster file
-declare -A cToStm
-
-
-while IFS=, read -r stm cluster score
-do
-    if [ "$stm" = "statement" ]; then
-        continue
-    fi
-
-    if [ "${cToStm[$cluster]}" = "" ]; then
-        cToStm[$cluster]="$stm"
-    else
-        cToStm[$cluster]="${cToStm[$cluster]}, $stm"
-    fi
-
-
-done < "$1"
-
-
-if [ "$2" = "-s" ]; then
-
-#simulate
-rm -rf imgs/planeSR_cluster
-mkdir imgs/planeSR_cluster
-
-#original
-rm -rf work
-vlib work
-vlog +incdir+rtl/template/utilsSR rtl/template/utilsSR/*.v rtl/tb/sobel_tb.v rtl/template/sobel_sr_template.v 
-vsim work.sobel_tb -c -voptargs="+acc" -do "run -all; quit" 
-mv IO/out/512x512sobel_out_nbits.txt imgs/planeSR_cluster/golden.txt
-
-
-vcd="sobel_tb/U0/*"
-
-
-for cluster in "${!cToStm[@]}"
-do
-    compDefine=""
-    echo "${cToStm[$cluster]}"
-    stms=${cToStm[$cluster]}
-    for stm in ${stms//,/ }
+    for id in ${tokenList//,/ }
     do
-        compDefine="$compDefine +define+$stm"
+        compDefine="$compDefine +define+${idToName[$id]}"
     done
 
+    #clear
     rm -rf work
     vlib work
-    vlog $compDefine +incdir+rtl/template/utilsSR rtl/template/utilsSR/*.v rtl/tb/sobel_tb.v rtl/template/sobel_sr_template.v 
-    #vsim work.sobel_tb -c -voptargs="+acc" -do "vcd file cluster$cluster.vcd; vcd add $vcd;run -all; quit" 
-    vsim work.sobel_tb -c -voptargs="+acc" -do "run -all; quit" 
-    mv IO/out/512x512sobel_out_nbits.txt imgs/planeSR_cluster/cluster$cluster.txt
-done
+    #simulate
+    vlog $compDefine $include $tb $src
+    vsim work.$top -c -voptargs="+acc" -do "run -all; quit" 
+    mv IO/out/512x512sobel_out_nbits.txt imgs/SR_cluster/"cluster_$clusterName.txt"
+
+}
 
 
-fi
+function simulateGolden() {
+
+#clear working directories
+rm -rf work
+
+#generate golden trace
+vlib work
+vlog $include $tb $src
+vsim work.$top -c -voptargs="+acc" -do "run -all; quit" 
+#store output
+mv IO/out/512x512sobel_out_nbits.txt imgs/SR_cluster/golden.txt
+}
+
+tojpgGolden () {
+    python3 scripts/sobel_IO_to_jpeg.py imgs/SR_cluster/golden.txt imgs/SR_cluster/golden.jpeg
+}
+
+getSSIMcluster () {
+    local clusterName=$1
+    #to jpeg
+    python3 scripts/sobel_IO_to_jpeg.py imgs/SR_cluster/"cluster_"$clusterName".txt" imgs/SR_cluster/"cluster_$clusterName.jpeg"
+
+#get ssim
+python3 -W ignore scripts/calc_SSIM.py imgs/SR_cluster/golden.jpeg imgs/SR_cluster/"cluster_$clusterName.jpeg"
+returnSSIM=$(head -n 1 ssim_out.txt)
+rm ssim_out.txt
+
+}
+
+
+
+###################START########################
+
+declare -A idToStm
+declare -A cToIds
+declare -A idToName
+
+nElements=0
 
 rm ssimSR_cluster.csv
 
-    #to jpeg
-    python3 scripts/sobel_IO_to_jpeg.py imgs/planeSR_cluster/golden.txt imgs/planeSR_cluster/golden.jpeg
-    for cluster in "${!cToStm[@]}"
-    do
-        python3 scripts/sobel_IO_to_jpeg.py imgs/planeSR_cluster/"cluster$cluster.txt" imgs/planeSR_cluster/"cluster$cluster.jpeg"
-    done
-
-#get ssim
-for cluster in "${!cToStm[@]}"
+#gather statements
+while IFS=, read -r stm cluster score
 do
-    python3 scripts/calc_SSIM.py imgs/planeSR_cluster/golden.jpeg imgs/planeSR_cluster/"cluster$cluster.jpeg"
-    ssim=$(head -n 1 ssim_out.txt)
-    echo "c$cluster,$ssim" >> ssimSR_cluster.csv
+
+    idToStm[$nElements]="$stm"
+    idToName[$nElements]="$stm"
+    if [ ! -v 'cToIds[$cluster]' ]; then
+        #populate the mask with 1s if token was unkown until now
+        cToIds[$cluster]="$nElements"
+    else
+        cToIds[$cluster]="${cToIds[$cluster]},$nElements"
+    fi
+    ((nElements++))
+done < <(tail -n +2 $clusterFile)
+
+if [ "$1" = "-s" ]; then
+    rm -rf imgs/SR_cluster
+    mkdir imgs/SR_cluster
+
+    simulateGolden
+fi
+
+
+
+
+#for each input size
+echo "cluster,ssim" >> ssimSR_cluster.csv
+
+tojpgGolden
+
+for c in "${!cToIds[@]}"
+do
+    if [ "$1" = "-s" ]; then
+        simulateCluster "${cToIds[$c]}" "$c"
+    fi
+    getSSIMcluster "$c"
+    echo "$c,$returnSSIM" >> ssimSR_cluster.csv
+
 done
 
-rm ssim_out.txt
+mv ssimSR_cluster.csv ssim/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

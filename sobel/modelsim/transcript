@@ -1,5 +1,5 @@
 # vsim work.sobel_tb -c -voptargs="+acc" -do "run -all; quit" 
-# Start time: 21:44:44 on Sep 25,2022
+# Start time: 18:17:25 on Sep 29,2022
 # ** Note: (vsim-3812) Design is being optimized...
 # //  ModelSim SE-64 2019.4 Oct 15 2019 Linux 5.8.0-50-generic
 # //
@@ -28,7 +28,7 @@
 # Loading work.mux_11b(fast)
 # Loading work.mux_8b(fast)
 # run -all
-# ** Note: $finish    : rtl/tb/sobel_tb.v(33)
+# ** Note: $finish    : rtl/tb/sobel_tb.v(39)
 #    Time: 2621455 ns  Iteration: 1  Instance: /sobel_tb
-# End time: 21:44:48 on Sep 25,2022, Elapsed time: 0:00:04
+# End time: 18:17:28 on Sep 29,2022, Elapsed time: 0:00:03
 # Errors: 0, Warnings: 0

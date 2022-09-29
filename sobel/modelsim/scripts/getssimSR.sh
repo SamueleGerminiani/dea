@@ -1,57 +1,63 @@
 
 
+#parameters
+nStatements=38
+src="rtl/template/sobel_sr_template.v rtl/template/utilsSR/*.v"
+tb="rtl/tb/sobel_tb.v"
+include="+incdir+rtl/template/utilsSR"
+traceLength=1000
+top="sobel_tb"
 
+#============[1]====================================
+#simulate
 
+if [ "$1" = "-s" ]; then
 
+#clear working directories
+rm -rf imgs/SR
+mkdir imgs/SR
 
-
-
-nStatements=$1
-
-if [ -z "$1" ]
-  then
-    echo "Must give the number of statements as first argument"
-fi
-
-
-if [ "$2" = "-s" ]; then
-
-##simulate
-rm -rf imgs/planeSR
-mkdir imgs/planeSR
-
-#original
-rm -rf work
+#generate golden trace
 vlib work
-vlog +incdir+rtl/template/utilsSR rtl/tb/sobel_tb.v rtl/template/sobel_sr_template.v rtl/utils/*.v
-vsim work.sobel_tb -c -voptargs="+acc" -do "run -all; quit" 
-mv IO/out/512x512sobel_out_nbits.txt imgs/planeSR/golden.txt
+vlog $include $tb $src
+vsim work.$top -c -voptargs="+acc" -do "run -all; quit" 
+#store output
+mv IO/out/512x512sobel_out_nbits.txt imgs/SR/golden.txt
 
-nStatements=$1
 for ((i=0;i<nStatements;i++)); do
+    #clear
     rm -rf work
     vlib work
-    vlog +define+"s$i" +incdir+rtl/template/utilsSR rtl/tb/sobel_tb.v rtl/template/sobel_sr_template.v rtl/template/utilsSR/*.v
-    vsim work.sobel_tb -c -voptargs="+acc" -do "run -all; quit" 
-    mv IO/out/512x512sobel_out_nbits.txt imgs/planeSR/"s$i".txt
+    #simulate
+    vlog +define+"s$i" $include $tb $src
+    vsim work.$top -c -voptargs="+acc" -do "run -all; quit" 
+    #store output
+    mv IO/out/512x512sobel_out_nbits.txt imgs/SR/"s$i".txt
 done
 
 
 fi
 
+#============[2]====================================
+
 ##to jpeg
-python3 scripts/sobel_IO_to_jpeg.py imgs/planeSR/golden.txt imgs/planeSR/golden.jpeg
+python3 scripts/sobel_IO_to_jpeg.py imgs/SR/golden.txt imgs/SR/golden.jpeg
 
 for ((i=0;i<nStatements;i++)); do
-    python3 scripts/sobel_IO_to_jpeg.py imgs/planeSR/"s$i.txt" imgs/planeSR/"s$i.jpeg"
+    python3 scripts/sobel_IO_to_jpeg.py imgs/SR/"s$i.txt" imgs/SR/"s$i.jpeg"
 done
 
-##get ssim
+#============[3]====================================
+#get ssim
 
 rm ssimSR.csv
+
+echo "token,ssim" >> ssimSR.csv
 for ((i=0;i<nStatements;i++)); do
-    python3 scripts/calc_SSIM.py imgs/planeSR/golden.jpeg imgs/planeSR/"s$i.jpeg"
+    python3 -W ignore scripts/calc_SSIM.py imgs/SR/golden.jpeg imgs/SR/"s$i.jpeg"
     ssim=$(head -n 1 ssim_out.txt)
    echo "s$i,$ssim" >> ssimSR.csv
 done
+
 rm ssim_out.txt
+mv ssimSR.csv ssim/

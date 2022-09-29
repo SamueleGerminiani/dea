@@ -1,3 +1,11 @@
+
+`define GET_TRACE_LENGTH()\
+`ifdef TRACE_LENGTH\
+    `TRACE_LENGTH\
+`else\
+    262144\
+`endif
+
 module sobel_tb();
 
 	reg [8:0] p0,p1,p2,p3,p5,p6,p7,p8,p4;
@@ -26,9 +34,7 @@ module sobel_tb();
 
 	always @(posedge clk)
 	begin
-if(count > 262144)
-//if(count > 1000)
-//if(count > 10)
+if(count > `GET_TRACE_LENGTH)
 		begin
 			$finish;
 		end

@@ -1,28 +1,42 @@
 #!/bin/bash 
-#$1 is the map file
+
+#parameters
+varListFile="info/varList.csv"
+src="rtl/template/sobel_br_template.v rtl/utils/*.v"
+tb="rtl/tb/sobel_tb.v"
+top="sobel_tb"
+vcd="$top/*"
+traceLength=1000
+
+#clear working directories
 rm -rf vcd/latest
 mkdir vcd/latest
-
-#original
 rm -rf work
-vcd="sobel_tb/*"
-vlib work
-vlog rtl/tb/sobel_tb.v rtl/template/sobel_br_template.v rtl/utils/*.v
-vsim work.sobel_tb -c -voptargs="+acc" -do "vcd file vcd/latest/sobel.vcd; vcd add $vcd; run -all; quit" 
 
-#with sa 0
+#generate golden trace
+vlib work
+vlog +define+TRACE_LENGTH=""$traceLength"" $tb $src
+vsim work.$top -c -voptargs="+acc" -do "vcd file vcd/latest/golden.vcd; vcd add $vcd; run -all; quit" 
+
+#for each var
 while IFS=, read -r var size 
 do
-    size=${size//[^[:alnum:]^[._]]/}
+    #remove hidden chars
+    size=${size//[^[:alnum:]]/}
 
-    if ["$var" = "var" && "$size" = "size" ]; then
-        continue
-    fi
+#for each bit var in var of size 'size'
+for ((bit=0;bit<size;bit++)); do
+    #clear
+    rm -rf work
+    vlib work
+    #simulate
+    vlog +define+TRACE_LENGTH=""$traceLength"" +define+bit=""$bit"" +define+"$var" $tb $src
+    vsim work.$top -c -voptargs="+acc" -do "vcd file vcd/latest/"$var[$bit]".vcd; vcd add $vcd; run -all; quit" 
+done
 
-    for ((bit=0;bit<size;bit++)); do
-        rm -rf work
-        vlib work
-        vlog +define+bit=""$bit"" +define+"$var" rtl/tb/sobel_tb.v rtl/template/sobel_br_template.v rtl/utils/*.v
-        vsim work.sobel_tb -c -voptargs="+acc" -do "vcd file vcd/latest/"$var[$bit]".vcd; vcd add $vcd; run -all; quit" 
-    done
-done < "$1"
+done < <(tail -n +2 $varListFile)
+
+#move traces to final directories
+rm vcd/faultVBR/*
+cp vcd/latest/golden.vcd vcd/goldenVBR.vcd
+cp vcd/latest/* vcd/faultVBR/

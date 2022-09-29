@@ -1,107 +1,151 @@
+#!/bin/bash 
+
+#parameters
+clusterFile="../harm/outVBR/rank/rank_vbr.csv"
+src="rtl/template/sobel_br_template_cluster.v rtl/utils/*.v"
+tb="rtl/tb/sobel_tb.v"
+top="sobel_tb"
 
 
+function simulateCluster() {
+    local tokenList=$1
+    local clusterName=$2
+    local compDefine=""
+    declare -A nameToMask
+    declare -A nameToSize
 
-
-
-
-
-
-
-if [ -z "$1" ]
-then
-    echo "Must give the map cl uster file"
-fi
-
-#read map cluster file
-declare -A sToSize
-declare -A cToMask
-declare -A cToMock
-
-
-#find how many vars and clusters
-while IFS=, read -r var size bit cluster ssim
-do
-    if ["$var" = "var" && "$size" = "size" ]; then
-        continue
-    fi
-
-    sToSize[$var]=$size
-    cToMock[$cluster]="mock"
-    #populate the mask with 1s
-    key="$cluster""_""$var"
-    cToMask[$key]=$(head -c "$size" < /dev/zero | tr '\0' '1')
-done < "$1"
-
-if [ "$2" = "-s" ]; then
-
-##simulate
-rm -rf imgs/planeVBR_cluster
-mkdir imgs/planeVBR_cluster
-
-#original
-rm -rf work
-vlib work
-vlog rtl/tb/sobel_tb.v rtl/template/sobel_br_template_cluster.v rtl/utils/*.v
-vsim work.sobel_tb -c -voptargs="+acc" -do "run -all; quit" 
-mv IO/out/512x512sobel_out_nbits.txt imgs/planeVBR_cluster/golden.txt
-
-
-vcd="sobel_tb/U0/*"
-
-
-
-#create the masks
-while IFS=, read -r var size bit cluster ssim
-do
-    if ["$var" = "var" && "$size" = "size" ]; then
-        continue
-    fi
-
-    #echo "$var""_""$bit"
-    key="$cluster""_""$var"
-    tmp=${cToMask[$key]}
-    let index="$((size - bit))"
-    tmp=$(echo $tmp | sed s/./0/$index)
-    cToMask[$key]=$tmp
-done < "$1"
-
-for cluster in "${!cToMock[@]}"
-do
-    compDefine=""
-    for var in "${!sToSize[@]}"
+    for id in ${tokenList//,/ }
     do
-        key="$cluster""_""$var"
-        if [[ ${cToMask[$key]} != "" ]]; then
-            echo "$key : ${cToMask[$key]}"
-            compDefine="$compDefine +define+$var +define+MASK_$var=${sToSize[$var]}'b${cToMask[$key]}"
+
+        #retrieve info
+        local size=${idToSize[$id]}
+        local bit=${idToBit[$id]}
+        local name=${idToName[$id]}
+        if [ ! -v 'nameToMask[$name]' ]; then
+            #populate the mask with 1s if token was unkown until now
+            nameToMask[$name]=$(head -c "$size" < /dev/zero | tr '\0' '1')
         fi
+
+        #turn the ith bit to 0
+        let index="$((size - bit))"
+        nameToMask[$name]=$(echo ${nameToMask[$name]} | sed s/./0/$index)
+        nameToSize[$name]=$size
     done
 
-    rm -rf work
-    vlib work
-    vlog $compDefine rtl/tb/sobel_tb.v rtl/template/sobel_br_template_cluster.v rtl/utils/*.v
-    #vsim work.sobel_tb -c -voptargs="+acc" -do "vcd file cluster$cluster.vcd; vcd add $vcd;run -all; quit" 
-    vsim work.sobel_tb -c -voptargs="+acc" -do "run -all; quit" 
-    mv IO/out/512x512sobel_out_nbits.txt imgs/planeVBR_cluster/cluster$cluster.txt
-done
+    for name in "${!nameToMask[@]}"
+    do
+        compDefine="$compDefine +define+$name +define+MASK_$name=${nameToSize[$name]}'b${nameToMask[$name]}"
+    done
 
-fi
+#clear working directories
+rm -rf work
+
+#generate golden trace
+vlib work
+vlog $compDefine $tb $src
+vsim work.$top -c -voptargs="+acc" -do "run -all; quit" 
+mv IO/out/512x512sobel_out_nbits.txt imgs/VBR_cluster/cluster_$clusterName.txt
+
+}
+
+
+function simulateGolden() {
+
+#clear working directories
+rm -rf work
+
+#generate golden trace
+vlib work
+vlog $tb $src
+vsim work.$top -c -voptargs="+acc" -do "run -all; quit" 
+mv IO/out/512x512sobel_out_nbits.txt imgs/VBR_cluster/golden.txt
+}
+
+tojpgGolden () {
+    #to jpeg golden
+    python3 -W ignore scripts/sobel_IO_to_jpeg.py imgs/VBR_cluster/golden.txt imgs/VBR_cluster/golden.jpeg
+}
+
+getSSIMcluster () {
+    local clusterName=$1
+    #to jpeg
+    python3 scripts/sobel_IO_to_jpeg.py imgs/VBR_cluster/"cluster_"$clusterName".txt" imgs/VBR_cluster/"cluster_$clusterName.jpeg"
+
+    #get ssim
+    python3 -W ignore scripts/calc_SSIM.py imgs/VBR_cluster/golden.jpeg imgs/VBR_cluster/"cluster_$clusterName.jpeg"
+    returnSSIM=$(head -n 1 ssim_out.txt)
+    rm ssim_out.txt
+
+}
+
+
+###################START########################
+
+declare -A idToName
+declare -A idToSize
+declare -A idToBit
+declare -A cToIds
+
+#we use it to generate the ids
+nElements=0
 
 rm ssimVBR_cluster.csv
 
-    #to jpeg
-    python3 scripts/sobel_IO_to_jpeg.py imgs/planeVBR_cluster/golden.txt imgs/planeVBR_cluster/golden.jpeg
-    for cluster in "${!cToMock[@]}"
-    do
-        python3 scripts/sobel_IO_to_jpeg.py imgs/planeVBR_cluster/"cluster$cluster.txt" imgs/planeVBR_cluster/"cluster$cluster.jpeg"
-    done
-
-##get ssim
-for cluster in "${!cToMock[@]}"
+#gather tokens
+while IFS=, read -r var size bit cluster score
 do
-    python3 scripts/calc_SSIM.py imgs/planeVBR_cluster/golden.jpeg imgs/planeVBR_cluster/"cluster$cluster.jpeg"
-    ssim=$(head -n 1 ssim_out.txt)
-    echo "c$cluster,$ssim" >> ssimVBR_cluster.csv
+
+    idToName[$nElements]="$var"
+    idToSize[$nElements]="$size"
+    idToBit[$nElements]="$bit"
+
+    if [ ! -v 'cToIds[$cluster]' ]; then
+        cToIds[$cluster]="$nElements"
+    else
+        cToIds[$cluster]="${cToIds[$cluster]},$nElements"
+    fi
+
+    ((nElements++))
+done < <(tail -n +2 $clusterFile)
+
+
+if [ "$1" = "-s" ]; then
+
+    rm -rf imgs/VBR_cluster
+    mkdir imgs/VBR_cluster
+
+    simulateGolden
+fi
+
+
+
+#for each input size
+echo "cluster,ssim" >> ssimVBR_cluster.csv
+
+tojpgGolden
+
+for c in "${!cToIds[@]}"
+do
+    if [ "$1" = "-s" ]; then
+        simulateCluster "${cToIds[$c]}" "$c"
+    fi
+    getSSIMcluster "$c"
+    echo "$c,$returnSSIM" >> ssimVBR_cluster.csv
+
 done
 
-rm ssim_out.txt
+mv ssimVBR_cluster.csv ssim/
+
+
+
+
+
+
+
+
+
+
+
+
+
+

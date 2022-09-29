@@ -1,43 +1,62 @@
+#!/bin/bash 
 
+#parameters
+nStatements=38
+clusterFile="../harm/outSR/rank/rank_sr.csv"
+src="rtl/template/sobel_sr_template.v rtl/template/utilsSR/*.v"
+tb="rtl/tb/sobel_tb.v"
+include="+incdir+rtl/template/utilsSR"
+top="sobel_tb"
+sizeList=$1
+reps=$2
 
 
 function simulateCluster() {
+
     local stmList=$1
+    local nStms=$2
     local compDefine=""
-    local nStms=0
 
     for stm in ${stmList//,/ }
     do
         compDefine="$compDefine +define+$stm"
-        ((nStms++))
     done
+
+    #clear
     rm -rf work
     vlib work
-    vlog $compDefine +incdir+rtl/template/utilsSR rtl/template/utilsSR/*.v rtl/tb/sobel_tb.v rtl/template/sobel_sr_template.v 
-    vsim work.sobel_tb -c -voptargs="+acc" -do "run -all; quit" 
-    mv IO/out/512x512sobel_out_nbits.txt imgs/planeSR_cluster/"cluster_random_$nStms.txt"
+    #simulate
+    vlog $compDefine +define+"s$i" $include $tb $src
+    vsim work.$top -c -voptargs="+acc" -do "run -all; quit" 
+    mv IO/out/512x512sobel_out_nbits.txt imgs/SR_cluster/"cluster_random_$nStms.txt"
 
 }
 
 
 function simulateGolden() {
 
-
+#clear working directories
 rm -rf work
+
+#generate golden trace
 vlib work
-vlog +incdir+rtl/template/utilsSR rtl/template/utilsSR/*.v rtl/tb/sobel_tb.v rtl/template/sobel_sr_template.v 
-vsim work.sobel_tb -c -voptargs="+acc" -do "run -all; quit" 
-mv IO/out/512x512sobel_out_nbits.txt imgs/planeSR_cluster/golden.txt
+vlog $include $tb $src
+vsim work.$top -c -voptargs="+acc" -do "run -all; quit" 
+#store output
+mv IO/out/512x512sobel_out_nbits.txt imgs/SR_cluster/golden.txt
 }
 
-getSSIM () {
+tojpgGolden () {
+    python3 scripts/sobel_IO_to_jpeg.py imgs/SR_cluster/golden.txt imgs/SR_cluster/golden.jpeg
+}
+
+getSSIMcluster () {
     local nStms=$1
     #to jpeg
-    python3 scripts/sobel_IO_to_jpeg.py imgs/planeSR_cluster/golden.txt imgs/planeSR_cluster/golden.jpeg
-    python3 scripts/sobel_IO_to_jpeg.py imgs/planeSR_cluster/"cluster_random_"$nStms".txt" imgs/planeSR_cluster/"cluster_random_$nStms.jpeg"
+    python3 scripts/sobel_IO_to_jpeg.py imgs/SR_cluster/"cluster_random_"$nStms".txt" imgs/SR_cluster/"cluster_random_$nStms.jpeg"
 
 #get ssim
-python3 scripts/calc_SSIM.py imgs/planeSR_cluster/golden.jpeg imgs/planeSR_cluster/"cluster_random_$nStms.jpeg"
+python3 -W ignore scripts/calc_SSIM.py imgs/SR_cluster/golden.jpeg imgs/SR_cluster/"cluster_random_$nStms.jpeg"
 returnSSIM=$(head -n 1 ssim_out.txt)
 rm ssim_out.txt
 
@@ -45,9 +64,10 @@ rm ssim_out.txt
 
 
 
+###################START########################
+
 declare -A idToStm
 
-in=$2
 nElements=0
 
 rm ssimSR_cluster_random.csv
@@ -55,24 +75,22 @@ rm ssimSR_cluster_random.csv
 #gather statements
 while IFS=, read -r stm cluster score
 do
-    if [ "$stm" = "statement" ]; then
-        continue
-    fi
 
     idToStm[$nElements]="$stm"
-
     ((nElements++))
-done < "$1"
+done < <(tail -n +2 $clusterFile)
 
-rm -rf imgs/planeSR_cluster
-mkdir imgs/planeSR_cluster
+rm -rf imgs/SR_cluster
+mkdir imgs/SR_cluster
 
 simulateGolden
+tojpgGolden
 
-reps=$3
+
+echo "size,ssim" >> ssimSR_cluster_random.csv
 
 #for each input size
-for size in ${in//,/ }
+for size in ${sizeList//,/ }
 do
 
     sumSSIM=0
@@ -88,8 +106,8 @@ do
             fi
         done
 
-        simulateCluster "$tmpList"
-        getSSIM "$size"
+        simulateCluster "$tmpList" "$size"
+        getSSIMcluster "$size"
         sumSSIM=$(awk "BEGIN{ print ($sumSSIM + $returnSSIM)}")
     done
     avgSSIM=$(awk "BEGIN{ print ($sumSSIM / $reps)}")
@@ -97,6 +115,7 @@ do
     echo "$size,$avgSSIM" >> ssimSR_cluster_random.csv
 
 done
+mv ssimSR_cluster_random.csv ssim/
 
 
 
