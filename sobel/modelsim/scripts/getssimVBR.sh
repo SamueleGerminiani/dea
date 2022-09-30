@@ -2,10 +2,9 @@
 
 #parameters
 varListFile="info/varList.csv"
-src="rtl/template/sobel_br_template.v rtl/utils/*.v"
+src="rtl/template/sobel_vbr_template.v rtl/utils/*.v"
 tb="rtl/tb/sobel_tb.v"
 top="sobel_tb"
-vcd="$top/*"
 
 
 #============[1]====================================

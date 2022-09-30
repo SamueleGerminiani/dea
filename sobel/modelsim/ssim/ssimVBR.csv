@@ -1,4 +1,4 @@
-var,ssim
+token,ssim
 p2_p8[0],0.983897
 p2_p8[1],0.970618
 p2_p8[2],0.943519
@@ -62,7 +62,6 @@ center_rm[5],0.493762
 center_rm[6],0.301823
 center_rm[7],0.159002
 center_rm[8],0.061708
-center_rm[9],1.000000
 center_tm[0],0.983980
 center_tm[1],0.967933
 center_tm[2],0.932161
@@ -72,7 +71,6 @@ center_tm[5],0.479748
 center_tm[6],0.293046
 center_tm[7],0.151684
 center_tm[8],0.047889
-center_tm[9],1.000000
 center_1[0],1.000000
 center_1[1],0.969608
 center_1[2],0.942909

@@ -1,17 +1,16 @@
 #!/bin/bash 
 
 #parameters
-clusterFile="../harm/outVBR/rank/rank_vbr.csv"
-src="rtl/template/sobel_br_template_cluster.v rtl/utils/*.v"
+clusterFile="../evaluator/rank/rank_vbr.csv"
+src="rtl/template/sobel_vbr_template_cluster.v rtl/utils/*.v"
 tb="rtl/tb/sobel_tb.v"
 top="sobel_tb"
-sizeList=$1
-reps=$2
+reps=20
 
 
 function simulateCluster() {
     local tokenList=$1
-    local nTokens=$2
+    local clusterName=$2
     local compDefine=""
     declare -A nameToMask
     declare -A nameToSize
@@ -46,7 +45,7 @@ rm -rf work
 vlib work
 vlog $compDefine $tb $src
 vsim work.$top -c -voptargs="+acc" -do "run -all; quit" 
-mv IO/out/512x512sobel_out_nbits.txt imgs/VBR_cluster/cluster_random_$nTokens.txt
+mv IO/out/512x512sobel_out_nbits.txt imgs/VBR_cluster/cluster_random_$clusterName.txt
 
 }
 
@@ -69,12 +68,12 @@ tojpgGolden () {
 }
 
 getSSIMcluster () {
-    local nTokens=$1
+    local clusterName=$1
     #to jpeg
-    python3 scripts/sobel_IO_to_jpeg.py imgs/VBR_cluster/"cluster_random_"$nTokens".txt" imgs/VBR_cluster/"cluster_random_$nTokens.jpeg"
+    python3 scripts/sobel_IO_to_jpeg.py imgs/VBR_cluster/"cluster_random_"$clusterName".txt" imgs/VBR_cluster/"cluster_random_$clusterName.jpeg"
 
     #get ssim
-    python3 -W ignore scripts/calc_SSIM.py imgs/VBR_cluster/golden.jpeg imgs/VBR_cluster/"cluster_random_$nTokens.jpeg"
+    python3 -W ignore scripts/calc_SSIM.py imgs/VBR_cluster/golden.jpeg imgs/VBR_cluster/"cluster_random_$clusterName.jpeg"
     returnSSIM=$(head -n 1 ssim_out.txt)
     rm ssim_out.txt
 
@@ -86,19 +85,35 @@ getSSIMcluster () {
 declare -A idToName
 declare -A idToSize
 declare -A idToBit
+declare -A cToSize
 
 #we use it to generate the ids
 nElements=0
+clusterID=0
+#used to keep track of the original order in the input file
+clustList=""
 
 rm ssimVBR_cluster_random.csv
 
-#gather statements
+#gather tokens
 while IFS=, read -r var size bit cluster score
 do
 
     idToName[$nElements]="$var"
     idToSize[$nElements]="$size"
     idToBit[$nElements]="$bit"
+
+    if [ ! -v 'cToSize[$cluster]' ]; then
+        cToSize[$cluster]=1
+        #generate clustList
+        if [ "$clustList" = "" ]; then
+            clustList="$cluster"
+        else
+            clustList="$clustList, $cluster"
+        fi
+    else
+        ((cToSize[$cluster]++))
+    fi
 
     ((nElements++))
 done < <(tail -n +2 $clusterFile)
@@ -110,32 +125,45 @@ simulateGolden
 tojpgGolden
 
 
-echo "size,ssim" >> ssimVBR_cluster_random.csv
+echo "cluster,size,ssim" >> ssimVBR_cluster_random.csv
+
 
 #for each input size
-for size in ${sizeList//,/ }
+for cluster in ${clustList//,/ }
 do
 
     sumSSIM=0
+    size=${cToSize[$cluster]}
     #gather random list of statements of size '$size'
     for ((j=0;j<reps;j++)); do
+        declare -A usedIds
         tmpList=""
         for ((i=0;i<size;i++)); do
-            random=$((RANDOM % $nElements))
+            #find a new random number (not present in the list)
+            while [[ 1 ]]; do
+                random=$((RANDOM % $nElements))
+                if [ ! -v 'usedIds[$random]' ]; then
+                    usedIds[$random]="ok"
+                    break
+                fi
+            done
+
             if [[ $tmpList == "" ]]; then
                 tmpList="$random"
             else
                 tmpList="$tmpList, $random"
             fi
         done
+        unset usedIds
 
-        simulateCluster "$tmpList" "$size"
-        getSSIMcluster "$size"
+        simulateCluster "$tmpList" "$cluster"
+        getSSIMcluster "$cluster"
         sumSSIM=$(awk "BEGIN{ print ($sumSSIM + $returnSSIM)}")
     done
+    #compute the avg ssim
     avgSSIM=$(awk "BEGIN{ print ($sumSSIM / $reps)}")
 
-    echo "$size,$avgSSIM" >> ssimVBR_cluster_random.csv
+    echo "$cluster,$size,$avgSSIM" >> ssimVBR_cluster_random.csv
 
 done
 

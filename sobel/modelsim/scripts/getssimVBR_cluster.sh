@@ -1,8 +1,8 @@
 #!/bin/bash 
 
 #parameters
-clusterFile="../harm/outVBR/rank/rank_vbr.csv"
-src="rtl/template/sobel_br_template_cluster.v rtl/utils/*.v"
+clusterFile="../evaluator/rank/rank_vbr.csv"
+src="rtl/template/sobel_vbr_template_cluster.v rtl/utils/*.v"
 tb="rtl/tb/sobel_tb.v"
 top="sobel_tb"
 
@@ -85,9 +85,12 @@ declare -A idToName
 declare -A idToSize
 declare -A idToBit
 declare -A cToIds
+declare -A cToSize
 
 #we use it to generate the ids
 nElements=0
+#used to keep track of the original order in the input file
+clustList=""
 
 rm ssimVBR_cluster.csv
 
@@ -100,9 +103,17 @@ do
     idToBit[$nElements]="$bit"
 
     if [ ! -v 'cToIds[$cluster]' ]; then
+        cToSize[$cluster]=1
         cToIds[$cluster]="$nElements"
+        #generate clustList
+        if [ "$clustList" = "" ]; then
+            clustList="$cluster"
+        else
+            clustList="$clustList,$cluster"
+        fi
     else
         cToIds[$cluster]="${cToIds[$cluster]},$nElements"
+        ((cToSize[$cluster]++))
     fi
 
     ((nElements++))
@@ -119,18 +130,17 @@ fi
 
 
 
-#for each input size
-echo "cluster,ssim" >> ssimVBR_cluster.csv
+echo "cluster,size,ssim" >> ssimVBR_cluster.csv
 
 tojpgGolden
 
-for c in "${!cToIds[@]}"
+for c in ${clustList//,/ }
 do
     if [ "$1" = "-s" ]; then
         simulateCluster "${cToIds[$c]}" "$c"
     fi
     getSSIMcluster "$c"
-    echo "$c,$returnSSIM" >> ssimVBR_cluster.csv
+    echo "$c,${cToSize[$c]},$returnSSIM" >> ssimVBR_cluster.csv
 
 done
 

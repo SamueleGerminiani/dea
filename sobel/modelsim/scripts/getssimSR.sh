@@ -1,4 +1,4 @@
-
+#!/bin/bash 
 
 #parameters
 nStatements=38

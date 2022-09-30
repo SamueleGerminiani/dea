@@ -2,7 +2,7 @@
 
 #parameters
 nStatements=38
-clusterFile="../harm/outSR/rank/rank_sr.csv"
+clusterFile="../evaluator/rank/rank_sr.csv"
 src="rtl/template/sobel_sr_template.v rtl/template/utilsSR/*.v"
 tb="rtl/tb/sobel_tb.v"
 include="+incdir+rtl/template/utilsSR"
@@ -67,8 +67,11 @@ rm ssim_out.txt
 declare -A idToStm
 declare -A cToIds
 declare -A idToName
+declare -A cToSize
 
 nElements=0
+#used to keep track of the original order in the input file
+clustList=""
 
 rm ssimSR_cluster.csv
 
@@ -79,10 +82,17 @@ do
     idToStm[$nElements]="$stm"
     idToName[$nElements]="$stm"
     if [ ! -v 'cToIds[$cluster]' ]; then
-        #populate the mask with 1s if token was unkown until now
+        cToSize[$cluster]=1
         cToIds[$cluster]="$nElements"
+        #generate clustList
+        if [ "$clustList" = "" ]; then
+            clustList="$cluster"
+        else
+            clustList="$clustList,$cluster"
+        fi
     else
         cToIds[$cluster]="${cToIds[$cluster]},$nElements"
+        ((cToSize[$cluster]++))
     fi
     ((nElements++))
 done < <(tail -n +2 $clusterFile)
@@ -97,18 +107,17 @@ fi
 
 
 
-#for each input size
-echo "cluster,ssim" >> ssimSR_cluster.csv
+echo "cluster,size,ssim" >> ssimSR_cluster.csv
 
 tojpgGolden
 
-for c in "${!cToIds[@]}"
+for c in ${clustList//,/ }
 do
     if [ "$1" = "-s" ]; then
         simulateCluster "${cToIds[$c]}" "$c"
     fi
     getSSIMcluster "$c"
-    echo "$c,$returnSSIM" >> ssimSR_cluster.csv
+    echo "$c,${cToSize[$c]},$returnSSIM" >> ssimSR_cluster.csv
 
 done
 
