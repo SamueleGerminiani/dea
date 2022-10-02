@@ -1,7 +1,7 @@
 #!/bin/bash 
 
 rankFile="rank/rank_vbr.csv"
-ssimFile="../modelsim/ssim/ssimVBR.csv"
+ssimFile="../simulator/ssim/ssimVBR.csv"
 
 
 declare -A sTss

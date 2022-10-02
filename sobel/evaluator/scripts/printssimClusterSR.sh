@@ -1,7 +1,7 @@
 #!/bin/bash 
 
-ssimCluster="../modelsim/ssim/ssimSR_cluster.csv"
-ssimClusterRandom="../modelsim/ssim/ssimSR_cluster_random.csv"
+ssimCluster="../simulator/ssim/ssimSR_cluster.csv"
+ssimClusterRandom="../simulator/ssim/ssimSR_cluster_random.csv"
 
 
 declare -A xTcs

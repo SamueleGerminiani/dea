@@ -1,4 +1,3 @@
-src/api/cpp/example/harm_example
 doc/html/
 build/*
 install/*
@@ -24,13 +23,14 @@ third_party/antlr4
 third_party/z3/
 tests/bl_master/bl_master100k.vcd
 .DS_Store
-sobel/modelsim/work/*
-sobel/modelsim/imgs/BR/*
-sobel/modelsim/imgs/BR_cluster/*
-sobel/modelsim/imgs/SR/*
-sobel/modelsim/imgs/SR_cluster/*
-sobel/modelsim/vcd/*
-sobel/modelsim/imgs/*
+sobel/simulator/work/*
+sobel/simulator/imgs/BR/*
+sobel/simulator/imgs/BR_cluster/*
+sobel/simulator/imgs/SR/*
+sobel/simulator/imgs/SR_cluster/*
+sobel/simulator/vcd/*
+sobel/simulator/imgs/*
+
 adder/modelsim/work/*
 adder/modelsim/vcd/*
 

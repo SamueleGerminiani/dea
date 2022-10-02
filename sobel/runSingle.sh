@@ -1,6 +1,5 @@
 #!/bin/bash 
 
-export HARM_ROOT=/home/sam/harm/
 cd modelsim
 bash scripts/simulateWithTemplateVBR.sh
 bash scripts/simulateWithTemplateSR.sh
