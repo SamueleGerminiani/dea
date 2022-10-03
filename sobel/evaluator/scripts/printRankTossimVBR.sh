@@ -3,44 +3,108 @@
 rankFile="rank/rank_vbr.csv"
 ssimFile="../simulator/ssim/ssimVBR.csv"
 
-
-declare -A sTss
-
-i=0
-while IFS=',' read -r var1 size bit cluster score
-do
-    sTr[$i]="$var1[$bit]"
-    ((i++))
-done < <(tail -n +2 $rankFile)
+if [ "$1" = "2d" ]; then
+    #=====================2D==========================
 
 
-while IFS=',' read -r var2 ssim 
-do
-    #remove hidden char
-    ssim=${ssim//[^[:alnum:]^[._]]/}
+    declare -A tokenToSSIM
+    declare -A rankToToken
 
-    sTss[$var2]=$ssim
-done < <(tail -n +2 $ssimFile)
-
-rm plotSingleVBR.csv
-
-for ((j=0;j<i;j++)); do
-    var=${sTr[$j]}
-    ssim="${sTss[$var]}"
-    if [ ! -z "$ssim" ]
-    then
-        echo "$j, $ssim" >> "plotSingleVBR.csv"
-    else
-        echo "Error!" 1>&2
-        exit 64
-    fi
-done
+    #used to assign IDs to the tokens
+    i=0
+    while IFS=',' read -r var1 size bit cluster score
+    do
+        rankToToken[$i]="$var1[$bit]"
+        ((i++))
+    done < <(tail -n +2 $rankFile)
 
 
-gnuplot -p -e "set datafile separator ',';set title 'VBR'; set style circle radius 1;set xlabel 'Ranking of bit tokens';set ylabel 'SSIM'; set style fill solid; plot 'plotSingleVBR.csv' with circles lc 'blue' notitle"
+    while IFS=',' read -r var2 ssim 
+    do
+        #remove hidden char
+        ssim=${ssim//[^[:alnum:]^[._]]/}
 
-if [ "$1" = -p ]; then
-    sed -i '1 i\x, ssim' "plotSingleVBR.csv"
-else
+        tokenToSSIM[$var2]=$ssim
+    done < <(tail -n +2 $ssimFile)
+
     rm plotSingleVBR.csv
+
+    for ((j=0;j<i;j++)); do
+        var=${rankToToken[$j]}
+        ssim="${tokenToSSIM[$var]}"
+        if [ ! -z "$ssim" ]
+        then
+            echo "$j, $ssim" >> "plotSingleVBR2d.csv"
+        else
+            echo "Error!" 1>&2
+            exit 64
+        fi
+    done
+
+
+    gnuplot -p -e "set datafile separator ',';set title 'VBR'; set style circle radius 1;set xlabel 'Ranking of bit tokens';set ylabel 'SSIM'; set style fill solid; plot 'plotSingleVBR2d.csv' with circles lc 'blue' notitle"
+
+    if [ "$2" = -p ]; then
+        sed -i '1 i\x, ssim' "plotSingleVBR2d.csv"
+    else
+        rm plotSingleVBR2d.csv
+    fi
+
+else
+
+    #=====================3D==========================
+
+    declare -A tokenToSSIM
+    declare -A rankToSSIMlist
+    declare -A rankToTokenList
+
+    #gather ssim
+    while IFS=',' read -r var2 ssim 
+    do
+        #remove hidden char
+        ssim=${ssim//[^[:alnum:]^[.]]/}
+        tokenToSSIM[$var2]=$ssim
+    done < <(tail -n +2 $ssimFile)
+
+    i=-1
+    prevScore=99999
+
+    #gather rank
+    while IFS=',' read -r var1 size bit cluster score
+    do
+        #remove hidden char
+        ssim=${score//[^[:alnum:]^[.]]/}
+
+        if [ "$score" -ne "$prevScore" ]; then
+            ((i++))
+            prevScore=$score
+            rankToTokenList[$i]="$var1[$bit]"
+        else
+            rankToTokenList[$i]="${rankToTokenList[$i]}, $var1[$bit]"
+        fi
+    done < <(tail -n +2 $rankFile)
+
+
+    rm plotSingleVBR3d.csv
+
+    for ((x=0;x<i;x++)); do
+        tokenList=${rankToTokenList[$x]}
+        y=0
+        for token in ${tokenList//,/ }
+        do
+            z="${tokenToSSIM[$token]}"
+            echo "$x, $y, $z" >> "plotSingleVBR3d.csv"
+            ((y++))
+        done
+    done
+
+
+    gnuplot -p -e "set datafile separator ',';set title 'VBR'; set style circle radius 1;set xlabel 'Ranking of bit tokens';set zlabel 'SSIM'; set ylabel 'Number of tokens with equal ranking'; set style fill solid; splot 'plotSingleVBR3d.csv' with circles lc 'blue' notitle"
+
+    if [ "$2" = -p ]; then
+        sed -i '1 i\x, y, z' "plotSingleVBR3d.csv"
+    else
+        rm plotSingleVBR3d.csv
+    fi
+
 fi

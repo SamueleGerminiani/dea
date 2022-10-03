@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-cd modelsim
+cd simulator
 bash scripts/simulateWithTemplateVBR.sh
 bash scripts/simulateWithTemplateSR.sh
 bash scripts/getssimVBR.sh -s

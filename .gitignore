@@ -30,6 +30,7 @@ sobel/simulator/imgs/SR/*
 sobel/simulator/imgs/SR_cluster/*
 sobel/simulator/vcd/*
 sobel/simulator/imgs/*
+sobel/simulator/transcript
 
 adder/modelsim/work/*
 adder/modelsim/vcd/*

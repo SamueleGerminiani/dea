@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-cd modelsim
+cd simulator
 bash scripts/getssimVBR_cluster.sh -s
 bash scripts/getssimSR_cluster.sh -s
 bash scripts/getssimVBR_cluster_random.sh
