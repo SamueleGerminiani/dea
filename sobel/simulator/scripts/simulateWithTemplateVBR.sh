@@ -30,7 +30,7 @@ for ((bit=0;bit<size;bit++)); do
     #clear
     rm -rf work
     $MODELSIM_BIN/vlib work
-    #simulate
+    #simulate with fault
     $MODELSIM_BIN/vlog +define+TRACE_LENGTH=""$traceLength"" +define+bit=""$bit"" +define+"$var" $include $tb $src
     $MODELSIM_BIN/vsim work.$top -c -voptargs="+acc" -do "vcd file vcd/latest/"$var[$bit]".vcd; vcd add $vcd; run -all; quit" 
 done

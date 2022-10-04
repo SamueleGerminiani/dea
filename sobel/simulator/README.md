@@ -1,6 +1,13 @@
-# All scripts in the 'scripts' directory must be executed from the 'modelsim' directory, each script contains a set of adjustable parameters in the header
+# All scripts in the 'scripts' directory must be executed from the 'simulator' directory, each script contains a set of adjustable parameters in the header
 
 ## To generate the traces
+
+* Generate the golden and faulty traces for the bit reduction technique :
+
+```
+bash scripts/simulateWithTemplateBR.sh
+```
+
 * Generate the golden and faulty traces for the variable bit reduction technique :
 
 ```
@@ -13,12 +20,21 @@ bash scripts/simulateWithTemplateVBR.sh
 bash scripts/simulateWithTemplateSR.sh
 ```
 
-nStatements is the number of approx. candidates in the design (right now we have 38 candidates spread across the source files)
+nStatements is the number of approximations candidates in the design (for this design, we have 38 candidates spread across the source files)
 
 The traces will be stored in the vcd/ directory
 
 ## To generate the ssim for single tokens
+
 * Generate the ssim for the bit reduction technique :
+
+```
+bash scripts/getssimBR.sh -s
+```
+
+Results are stored in the ssim/ssimBR.csv file
+
+* Generate the ssim for the variable bit reduction technique :
 
 ```
 bash scripts/getssimVBR.sh -s
@@ -35,21 +51,21 @@ bash scripts/getssimSR.sh -s
 Results are stored in the ssim/ssimSR.csv file
 
 ## To generate the ssim for multiple tokens (clusters)
+
 * Generate the ssim for the bit reduction technique :
+
+```
+bash getssimBR\_cluster.sh -s
+```
+Results are stored in the ssim/ssimBR\_cluster.csv file
+
+* Generate the ssim for the variable bit reduction technique :
 
 ```
 bash getssimVBR\_cluster.sh -s
 ```
 
 Results are stored in the ssim/ssimVBR\_cluster.csv file
-
-* Generate the ssim for the bit reduction technique (random) :
-
-```
-bash getssimVBR\_cluster.sh
-```
-
-Results are stored in the ssim/ssimVBR\_cluster\_random.csv file
 
 * Generate the ssim for the statement reduction technique :
 
@@ -58,6 +74,22 @@ bash scripts/getssimSR_cluster.sh -s
 ```
 
 Results are stored in the ssimSR\_cluster.csv file
+
+* Generate the ssim for the random bit reduction technique :
+
+```
+bash getssimBR\_cluster.sh
+```
+
+Results are stored in the ssim/ssimBR\_cluster\_random.csv file
+
+* Generate the ssim for the random variable bit reduction technique :
+
+```
+bash getssimVBR\_cluster.sh
+```
+
+Results are stored in the ssim/ssimVBR\_cluster\_random.csv file
 
 * Generate the ssim for the statement reduction technique (random) :
 

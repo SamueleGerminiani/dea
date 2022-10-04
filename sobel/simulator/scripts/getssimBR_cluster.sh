@@ -22,17 +22,19 @@ function simulateCluster() {
         local size=${idToSize[$id]}
         local bit=${idToBit[$id]}
         local name=${idToName[$id]}
+        #check if the key $name is contained in the dictionary 'nameToMask'
         if [ ! -v 'nameToMask[$name]' ]; then
             #populate the mask with 1s if token was unkown until now
             nameToMask[$name]=$(head -c "$size" < /dev/zero | tr '\0' '1')
         fi
 
-        #turn the ith bit to 0
+        #set the ith bit to 0
         let index="$((size - bit))"
         nameToMask[$name]=$(echo ${nameToMask[$name]} | sed s/./0/$index)
         nameToSize[$name]=$size
     done
 
+    #generate the compile options required to inject the faults into the design
     for name in "${!nameToMask[@]}"
     do
         compDefine="$compDefine +define+$name +define+MASK_$name=${nameToSize[$name]}'b${nameToMask[$name]}"
@@ -41,7 +43,7 @@ function simulateCluster() {
 #clear working directories
 rm -rf work
 
-#generate golden trace
+#generate the faulty trace
 $MODELSIM_BIN/vlib work
 $MODELSIM_BIN/vlog $include $compDefine $tb $src
 $MODELSIM_BIN/vsim work.$top -c -voptargs="+acc" -do "run -all; quit" 
@@ -55,7 +57,7 @@ function simulateGolden() {
 #clear working directories
 rm -rf work
 
-#generate golden trace
+#generate the golden trace
 $MODELSIM_BIN/vlib work
 $MODELSIM_BIN/vlog $include $tb $src
 $MODELSIM_BIN/vsim work.$top -c -voptargs="+acc" -do "run -all; quit" 
@@ -75,6 +77,8 @@ getSSIMcluster () {
     #get ssim
     python3 -W ignore scripts/calc_SSIM.py imgs/BR_cluster/golden.jpeg imgs/BR_cluster/"cluster_$clusterName.jpeg"
     returnSSIM=$(head -n 1 ssim_out.txt)
+
+    #remove temporary file
     rm ssim_out.txt
 
 }
@@ -107,6 +111,7 @@ do
         cToSize[$cluster]=1
         cToIds[$cluster]="$nElements"
         #generate clustList
+        #dirty way of creating a list
         if [ "$clustList" = "" ]; then
             clustList="$cluster"
         else
@@ -118,9 +123,12 @@ do
     fi
 
     ((nElements++))
+
+#this is to remove the csv header
 done < <(tail -n +2 $clusterFile)
 
 
+#do not simulate if -s is not given as input
 if [ "$1" = "-s" ]; then
 
     rm -rf imgs/BR_cluster
@@ -131,6 +139,7 @@ fi
 
 
 
+#dump csv header 
 echo "cluster,size,ssim" >> ssimBR_cluster.csv
 
 tojpgGolden
@@ -138,13 +147,16 @@ tojpgGolden
 for c in ${clustList//,/ }
 do
     if [ "$1" = "-s" ]; then
+        #generate the ssim for this cluster and save it in 'returnSSIM'
         simulateCluster "${cToIds[$c]}" "$c"
     fi
     getSSIMcluster "$c"
+    #dump to ssim to file
     echo "$c,${cToSize[$c]},$returnSSIM" >> ssimBR_cluster.csv
 
 done
 
+#move the result to the proper directory
 mv ssimBR_cluster.csv ssim/
 
 

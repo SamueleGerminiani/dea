@@ -23,7 +23,7 @@ for ((i=0;i<nStatements;i++)); do
     #clear
     rm -rf work
     $MODELSIM_BIN/vlib work
-    #simulate
+    #simulate with fault
     $MODELSIM_BIN/vlog +define+TRACE_LENGTH=""$traceLength"" +define+"s$i" $include $tb $src
     $MODELSIM_BIN/vsim work.$top -c -voptargs="+acc" -do "vcd file vcd/latest/s"$i".vcd; vcd add $vcd; run -all; quit" 
 done

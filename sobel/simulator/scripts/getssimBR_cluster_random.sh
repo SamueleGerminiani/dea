@@ -23,17 +23,19 @@ function simulateCluster() {
         local size=${idToSize[$id]}
         local bit=${idToBit[$id]}
         local name=${idToName[$id]}
+        #check if the key $name is contained in the dictionary 'nameToMask'
         if [ ! -v 'nameToMask[$name]' ]; then
             #populate the mask with 1s if token was unkown until now
             nameToMask[$name]=$(head -c "$size" < /dev/zero | tr '\0' '1')
         fi
 
-        #turn the ith bit to 0
+        #set the ith bit to 0
         let index="$((size - bit))"
         nameToMask[$name]=$(echo ${nameToMask[$name]} | sed s/./0/$index)
         nameToSize[$name]=$size
     done
 
+    #generate the compile options required to inject the faults into the design
     for name in "${!nameToMask[@]}"
     do
         compDefine="$compDefine +define+$name +define+MASK_$name=${nameToSize[$name]}'b${nameToMask[$name]}"
@@ -42,7 +44,7 @@ function simulateCluster() {
 #clear working directories
 rm -rf work
 
-#generate golden trace
+#generate the faulty trace
 $MODELSIM_BIN/vlib work
 $MODELSIM_BIN/vlog $include $compDefine $tb $src
 $MODELSIM_BIN/vsim work.$top -c -voptargs="+acc" -do "run -all; quit" 
@@ -76,6 +78,7 @@ getSSIMcluster () {
     #get ssim
     python3 -W ignore scripts/calc_SSIM.py imgs/BR_cluster/golden.jpeg imgs/BR_cluster/"cluster_random_$clusterName.jpeg"
     returnSSIM=$(head -n 1 ssim_out.txt)
+    #remove temporary file
     rm ssim_out.txt
 
 }
@@ -117,6 +120,8 @@ do
     fi
 
     ((nElements++))
+
+#this is to remove the csv header
 done < <(tail -n +2 $clusterFile)
 
 rm -rf imgs/BR_cluster
@@ -144,11 +149,14 @@ do
             while [[ 1 ]]; do
                 random=$((RANDOM % $nElements))
                 if [ ! -v 'usedIds[$random]' ]; then
+                    #found a new random number!
+                    #store the number
                     usedIds[$random]="ok"
                     break
                 fi
             done
 
+            #dirty way of creating a list
             if [[ $tmpList == "" ]]; then
                 tmpList="$random"
             else
@@ -164,10 +172,12 @@ do
     #compute the avg ssim
     avgSSIM=$(awk "BEGIN{ print ($sumSSIM / $reps)}")
 
+    #dump csv header 
     echo "$cluster,$size,$avgSSIM" >> ssimBR_cluster_random.csv
 
 done
 
+#move the result to the proper directory
 mv ssimBR_cluster_random.csv ssim/
 
 
