@@ -10,6 +10,7 @@ reps=20
 
 
 function simulateCluster() {
+
     local tokenList=$1
     local clusterName=$2
     local compDefine=""
@@ -131,6 +132,7 @@ simulateGolden
 tojpgGolden
 
 
+#dump csv header
 echo "cluster,size,ssim" >> ssimBR_cluster_random.csv
 
 
@@ -179,17 +181,3 @@ done
 
 #move the result to the proper directory
 mv ssimBR_cluster_random.csv ssim/
-
-
-
-
-
-
-
-
-
-
-
-
-
-

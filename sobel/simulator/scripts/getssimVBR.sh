@@ -11,6 +11,7 @@ top="sobel_tb"
 #============[1]====================================
 #simulate
 
+#do not simulate if -s is not given as input
 if [ "$1" = "-s" ]; then
 
 #clear working directories
@@ -31,7 +32,7 @@ do
     #remove hidden chars
     size=${size//[^[:alnum:]]/}
 
-#for each bit var in var of size 'size'
+#for each bit in var of size 'size'
 for ((bit=0;bit<size;bit++)); do
     #clear
     rm -rf work
@@ -44,6 +45,7 @@ for ((bit=0;bit<size;bit++)); do
 
 done
 
+#this is to remove the csv header
 done < <(tail -n +2 $varListFile)
 
 fi
@@ -59,7 +61,7 @@ do
     #remove hidden chars
     size=${size//[^[:alnum:]]/}
 
-#for each bit var in var of size 'size'
+#for each bit in var of size 'size'
 for ((bit=0;bit<size;bit++)); do
     ##to jpeg, faulty
     python3 scripts/sobel_IO_to_jpeg.py imgs/VBR/"$var[$bit].txt" imgs/VBR/"$var[$bit].jpeg"
@@ -72,6 +74,7 @@ done < <(tail -n +2 $varListFile)
 
 rm ssimVBR.csv
 
+#dump csv header 
 echo "token,ssim" >> ssimVBR.csv
 
 while IFS=, read -r var size
@@ -82,10 +85,15 @@ do
 
     for ((bit=0;bit<size;bit++)); do
         python3 -W ignore scripts/calc_SSIM.py imgs/VBR/golden.jpeg imgs/VBR/"$var[$bit].jpeg"
+        #extract ssim from file
         ssim=$(head -n 1 ssim_out.txt)
+        #store the found ssim
         echo "$var[$bit],$ssim" >> ssimVBR.csv
     done
 done < <(tail -n +2 $varListFile)
 
+#remove temporary file
 rm ssim_out.txt
+
+#move the result to the proper directory
 mv ssimVBR.csv ssim/

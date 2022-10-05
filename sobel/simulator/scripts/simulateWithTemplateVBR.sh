@@ -25,7 +25,7 @@ do
     #remove hidden chars
     size=${size//[^[:alnum:]]/}
 
-#for each bit var in var of size 'size'
+#for each bit in var of size 'size'
 for ((bit=0;bit<size;bit++)); do
     #clear
     rm -rf work
@@ -35,6 +35,7 @@ for ((bit=0;bit<size;bit++)); do
     $MODELSIM_BIN/vsim work.$top -c -voptargs="+acc" -do "vcd file vcd/latest/"$var[$bit]".vcd; vcd add $vcd; run -all; quit" 
 done
 
+#this is to remove the csv header
 done < <(tail -n +2 $varListFile)
 
 #move traces to final directories

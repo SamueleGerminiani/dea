@@ -11,6 +11,7 @@ top="sobel_tb"
 #============[1]====================================
 #simulate
 
+#do not simulate if -s is not given as input
 if [ "$1" = "-s" ]; then
 
 #clear working directories
@@ -52,12 +53,19 @@ done
 
 rm ssimSR.csv
 
+#dump csv header 
 echo "token,ssim" >> ssimSR.csv
+
 for ((i=0;i<nStatements;i++)); do
     python3 -W ignore scripts/calc_SSIM.py imgs/SR/golden.jpeg imgs/SR/"s$i.jpeg"
+        #extract ssim from file
     ssim=$(head -n 1 ssim_out.txt)
+        #store the found ssim
    echo "s$i,$ssim" >> ssimSR.csv
 done
 
+#remove temporary file
 rm ssim_out.txt
+
+#move the result to the proper directory
 mv ssimSR.csv ssim/

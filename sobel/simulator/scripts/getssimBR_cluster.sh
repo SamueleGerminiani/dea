@@ -151,24 +151,11 @@ do
         simulateCluster "${cToIds[$c]}" "$c"
     fi
     getSSIMcluster "$c"
-    #dump to ssim to file
+    #dump ssim to file
     echo "$c,${cToSize[$c]},$returnSSIM" >> ssimBR_cluster.csv
 
 done
 
 #move the result to the proper directory
 mv ssimBR_cluster.csv ssim/
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -16,18 +16,20 @@ function simulateCluster() {
     local clusterName=$2
     local compDefine=""
 
+    #generate the compile options required to inject the faults into the design
     for stm in ${stmList//,/ }
     do
         compDefine="$compDefine +define+$stm"
     done
 
-    #clear
-    rm -rf work
-    $MODELSIM_BIN/vlib work
-    #simulate
-    $MODELSIM_BIN/vlog $compDefine +define+"s$i" $include $tb $src
-    $MODELSIM_BIN/vsim work.$top -c -voptargs="+acc" -do "run -all; quit" 
-    mv IO/out/512x512sobel_out_nbits.txt imgs/SR_cluster/"cluster_random_$clusterName.txt"
+#clear working directories
+rm -rf work
+#generate the faulty trace
+
+$MODELSIM_BIN/vlib work
+$MODELSIM_BIN/vlog $compDefine +define+"s$i" $include $tb $src
+$MODELSIM_BIN/vsim work.$top -c -voptargs="+acc" -do "run -all; quit" 
+mv IO/out/512x512sobel_out_nbits.txt imgs/SR_cluster/"cluster_random_$clusterName.txt"
 
 }
 
@@ -95,6 +97,8 @@ do
     fi
 
     ((nElements++))
+
+#this is to remove the csv header
 done < <(tail -n +2 $clusterFile)
 
 rm -rf imgs/SR_cluster
@@ -104,6 +108,7 @@ simulateGolden
 tojpgGolden
 
 
+#dump csv header
 echo "cluster,size,ssim" >> ssimSR_cluster_random.csv
 
 #for each input size
@@ -121,10 +126,13 @@ do
             while [[ 1 ]]; do
                 random=$((RANDOM % $nElements))
                 if [ ! -v 'usedIds[$random]' ]; then
+                    #found a new random number!
+                    #store the number
                     usedIds[$random]="ok"
                     break
                 fi
             done
+            #dirty way of creating a list
             if [[ $tmpList == "" ]]; then
                 tmpList="${idToStm[$random]}"
             else
@@ -137,23 +145,13 @@ do
         getSSIMcluster "$cluster"
         sumSSIM=$(awk "BEGIN{ print ($sumSSIM + $returnSSIM)}")
     done
+    #compute the avg ssim
     avgSSIM=$(awk "BEGIN{ print ($sumSSIM / $reps)}")
 
+    #dump csv header 
     echo "$cluster,$size,$avgSSIM" >> ssimSR_cluster_random.csv
 
 done
+
+#move the result to the proper directory
 mv ssimSR_cluster_random.csv ssim/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
