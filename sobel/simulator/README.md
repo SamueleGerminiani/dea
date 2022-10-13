@@ -5,19 +5,19 @@
 * Generate the golden and faulty traces for the bit reduction technique :
 
 ```
-bash scripts/simulateWithTemplateBR.sh
+bash scripts/simulateBR.sh
 ```
 
 * Generate the golden and faulty traces for the variable bit reduction technique :
 
 ```
-bash scripts/simulateWithTemplateVBR.sh
+bash scripts/simulateVBR.sh
 ```
 
 * Generate the golden and faulty traces for the statement reduction technique :
 
 ```
-bash scripts/simulateWithTemplateSR.sh
+bash scripts/simulateSR.sh
 ```
 
 nStatements is the number of approximations candidates in the design (for this design, we have 38 candidates spread across the source files)

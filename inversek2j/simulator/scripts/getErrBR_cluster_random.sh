@@ -3,10 +3,10 @@
 #parameters
 clusterFile="../evaluator/rank/rank_br.csv"
 src="rtl/br_cluster/*.v"
-tb="rtl/tb/sobel_tb.v"
+tb="rtl/tb/inv_kin_tb.v"
 include=""
-top="sobel_tb"
-reps=20
+top="inv_kin_tb"
+reps=3
 
 
 function simulateCluster() {
@@ -49,7 +49,7 @@ rm -rf work
 $MODELSIM_BIN/vlib work
 $MODELSIM_BIN/vlog -quiet $include $compDefine $tb $src
 $MODELSIM_BIN/vsim -quiet work.$top -c -voptargs="+acc" -do "run -all; quit" 
-mv IO/out/512x512sobel_out_nbits.txt imgs/BR_cluster/cluster_random_$clusterName.txt
+mv IO/out/output.csv theta/BR_cluster/"cluster_random_$clusterName.csv"
 
 }
 
@@ -63,25 +63,7 @@ rm -rf work
 $MODELSIM_BIN/vlib work
 $MODELSIM_BIN/vlog -quiet $include $tb $src
 $MODELSIM_BIN/vsim -quiet work.$top -c -voptargs="+acc" -do "run -all; quit" 
-mv IO/out/512x512sobel_out_nbits.txt imgs/BR_cluster/golden.txt
-}
-
-tojpgGolden () {
-    #to jpeg golden
-    python3 scripts/sobel_IO_to_jpeg.py imgs/BR_cluster/golden.txt imgs/BR_cluster/golden.jpeg
-}
-
-getSSIMcluster () {
-    local clusterName=$1
-    #to jpeg
-    python3 scripts/sobel_IO_to_jpeg.py imgs/BR_cluster/"cluster_random_"$clusterName".txt" imgs/BR_cluster/"cluster_random_$clusterName.jpeg"
-
-    #get ssim
-    python3 -W ignore scripts/calc_SSIM.py imgs/BR_cluster/golden.jpeg imgs/BR_cluster/"cluster_random_$clusterName.jpeg"
-    returnSSIM=$(head -n 1 ssim_out.txt)
-    #remove temporary file
-    rm ssim_out.txt
-
+mv IO/out/output.csv theta/BR_cluster/golden.csv
 }
 
 
@@ -98,7 +80,7 @@ clusterID=0
 #used to keep track of the original order in the input file
 clustList=""
 
-rm ssimBR_cluster_random.csv
+rm errBR_cluster_random.csv
 
 #gather tokens
 while IFS=, read -r token size bit cluster score
@@ -125,22 +107,21 @@ do
 #this is to remove the csv header
 done < <(tail -n +2 $clusterFile)
 
-rm -rf imgs/BR_cluster
-mkdir imgs/BR_cluster
+rm -rf theta/BR_cluster
+mkdir theta/BR_cluster
 
 simulateGolden
-tojpgGolden
 
 
 #dump csv header
-echo "cluster,size,ssim" >> ssimBR_cluster_random.csv
+echo "cluster,size,err" >> errBR_cluster_random.csv
 
 
 #for each input size
 for cluster in ${clustList//,/ }
 do
 
-    sumSSIM=0
+    sumErr=0
     size=${cToSize[$cluster]}
     #gather random list of statements of size '$size'
     for ((j=0;j<reps;j++)); do
@@ -168,16 +149,17 @@ do
         unset usedIds
 
         simulateCluster "$tmpList" "$cluster"
-        getSSIMcluster "$cluster"
-        sumSSIM=$(awk "BEGIN{ print ($sumSSIM + $returnSSIM)}")
+
+        retErr=$(./scripts/getError/getError.x "theta/BR_cluster/golden.csv" "theta/BR_cluster/cluster_random_${cluster}.csv" "2,3")
+        sumErr=$(awk "BEGIN{ print ($sumErr + $retErr)}")
     done
-    #compute the avg ssim
-    avgSSIM=$(awk "BEGIN{ print ($sumSSIM / $reps)}")
+    #compute the avg err
+    avgErr=$(awk "BEGIN{ print ($sumErr / $reps)}")
 
     #dump csv header 
-    echo "$cluster,$size,$avgSSIM" >> ssimBR_cluster_random.csv
+    echo "$cluster,$size,$avgErr" >> errBR_cluster_random.csv
 
 done
 
 #move the result to the proper directory
-mv ssimBR_cluster_random.csv ssim/
+mv errBR_cluster_random.csv err/

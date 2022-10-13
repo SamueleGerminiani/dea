@@ -1,11 +1,11 @@
 #!/bin/bash 
 
 #parameters
-clusterFile="../evaluator/rank/rank_br.csv"
-src="rtl/br_cluster/*.v"
-tb="rtl/tb/sobel_tb.v"
+clusterFile="../evaluator/rank/rank_vbr.csv"
+src="rtl/vbr_cluster/*.v"
+tb="rtl/tb/inv_kin_tb.v"
 include=""
-top="sobel_tb"
+top="inv_kin_tb"
 
 
 function simulateCluster() {
@@ -43,11 +43,11 @@ function simulateCluster() {
 #clear working directories
 rm -rf work
 
-#generate the faulty trace
+#generate faulty trace
 $MODELSIM_BIN/vlib work
 $MODELSIM_BIN/vlog -quiet $include $compDefine $tb $src
 $MODELSIM_BIN/vsim -quiet work.$top -c -voptargs="+acc" -do "run -all; quit" 
-mv IO/out/512x512sobel_out_nbits.txt imgs/BR_cluster/cluster_$clusterName.txt
+mv IO/out/output.csv theta/VBR_cluster/"cluster_$clusterName.csv"
 
 }
 
@@ -57,30 +57,11 @@ function simulateGolden() {
 #clear working directories
 rm -rf work
 
-#generate the golden trace
+#generate golden trace
 $MODELSIM_BIN/vlib work
 $MODELSIM_BIN/vlog -quiet $include $tb $src
 $MODELSIM_BIN/vsim -quiet work.$top -c -voptargs="+acc" -do "run -all; quit" 
-mv IO/out/512x512sobel_out_nbits.txt imgs/BR_cluster/golden.txt
-}
-
-tojpgGolden () {
-    #to jpeg golden
-    python3 -W ignore scripts/sobel_IO_to_jpeg.py imgs/BR_cluster/golden.txt imgs/BR_cluster/golden.jpeg
-}
-
-getSSIMcluster () {
-    local clusterName=$1
-    #to jpeg
-    python3 scripts/sobel_IO_to_jpeg.py imgs/BR_cluster/"cluster_"$clusterName".txt" imgs/BR_cluster/"cluster_$clusterName.jpeg"
-
-    #get ssim
-    python3 -W ignore scripts/calc_SSIM.py imgs/BR_cluster/golden.jpeg imgs/BR_cluster/"cluster_$clusterName.jpeg"
-    returnSSIM=$(head -n 1 ssim_out.txt)
-
-    #remove temporary file
-    rm ssim_out.txt
-
+mv IO/out/output.csv theta/VBR_cluster/golden.csv
 }
 
 
@@ -97,13 +78,13 @@ nElements=0
 #used to keep track of the original order in the input file
 clustList=""
 
-rm ssimBR_cluster.csv
+rm errVBR_cluster.csv
 
 #gather tokens
-while IFS=, read -r token size bit cluster score
+while IFS=, read -r var size bit cluster score
 do
 
-    idToName[$nElements]="$token"
+    idToName[$nElements]="$var"
     idToSize[$nElements]="$size"
     idToBit[$nElements]="$bit"
 
@@ -131,31 +112,32 @@ done < <(tail -n +2 $clusterFile)
 #do not simulate if -s is not given as input
 if [ "$1" = "-s" ]; then
 
-    rm -rf imgs/BR_cluster
-    mkdir imgs/BR_cluster
+    rm -rf imgs/VBR_cluster
+    mkdir imgs/VBR_cluster
 
     simulateGolden
 fi
 
 
+rm errVBR.csv
 
 #dump csv header 
-echo "cluster,size,ssim" >> ssimBR_cluster.csv
-
-tojpgGolden
+echo "cluster,size,err" >> errVBR_cluster.csv
 
 for c in ${clustList//,/ }
 do
     if [ "$1" = "-s" ]; then
-        #generate the ssim for this cluster and save it in 'returnSSIM'
+        #generate the err for this cluster and save it in 'returnErr'
         simulateCluster "${cToIds[$c]}" "$c"
     fi
-    getSSIMcluster "$c"
-    #dump ssim to file
-    echo "$c,${cToSize[$c]},$returnSSIM" >> ssimBR_cluster.csv
+
+    retErr=$(./scripts/getError/getError.x "theta/VBR_cluster/golden.csv" "theta/VBR_cluster/cluster_${c}.csv" "2,3")
+
+    #dump err to file
+    echo "$c,${cToSize[$c]},$retErr" >> errVBR_cluster.csv
 
 done
 
 #move the result to the proper directory
-mv ssimBR_cluster.csv ssim/
+mv errVBR_cluster.csv err/
 

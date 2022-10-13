@@ -3,14 +3,12 @@
 #parameters
 clusterFile="../evaluator/rank/rank_br.csv"
 src="rtl/br_cluster/*.v"
-tb="rtl/tb/sobel_tb.v"
+tb="rtl/tb/inv_kin_tb.v"
 include=""
-top="sobel_tb"
-reps=20
+top="inv_kin_tb"
 
 
 function simulateCluster() {
-
     local tokenList=$1
     local clusterName=$2
     local compDefine=""
@@ -49,7 +47,7 @@ rm -rf work
 $MODELSIM_BIN/vlib work
 $MODELSIM_BIN/vlog -quiet $include $compDefine $tb $src
 $MODELSIM_BIN/vsim -quiet work.$top -c -voptargs="+acc" -do "run -all; quit" 
-mv IO/out/512x512sobel_out_nbits.txt imgs/BR_cluster/cluster_random_$clusterName.txt
+mv IO/out/output.csv theta/BR_cluster/"cluster_$clusterName.csv"
 
 }
 
@@ -59,29 +57,11 @@ function simulateGolden() {
 #clear working directories
 rm -rf work
 
-#generate golden trace
+#generate the golden trace
 $MODELSIM_BIN/vlib work
 $MODELSIM_BIN/vlog -quiet $include $tb $src
 $MODELSIM_BIN/vsim -quiet work.$top -c -voptargs="+acc" -do "run -all; quit" 
-mv IO/out/512x512sobel_out_nbits.txt imgs/BR_cluster/golden.txt
-}
-
-tojpgGolden () {
-    #to jpeg golden
-    python3 scripts/sobel_IO_to_jpeg.py imgs/BR_cluster/golden.txt imgs/BR_cluster/golden.jpeg
-}
-
-getSSIMcluster () {
-    local clusterName=$1
-    #to jpeg
-    python3 scripts/sobel_IO_to_jpeg.py imgs/BR_cluster/"cluster_random_"$clusterName".txt" imgs/BR_cluster/"cluster_random_$clusterName.jpeg"
-
-    #get ssim
-    python3 -W ignore scripts/calc_SSIM.py imgs/BR_cluster/golden.jpeg imgs/BR_cluster/"cluster_random_$clusterName.jpeg"
-    returnSSIM=$(head -n 1 ssim_out.txt)
-    #remove temporary file
-    rm ssim_out.txt
-
+mv IO/out/output.csv theta/BR_cluster/golden.csv
 }
 
 
@@ -90,15 +70,15 @@ getSSIMcluster () {
 declare -A idToName
 declare -A idToSize
 declare -A idToBit
+declare -A cToIds
 declare -A cToSize
 
 #we use it to generate the ids
 nElements=0
-clusterID=0
 #used to keep track of the original order in the input file
 clustList=""
 
-rm ssimBR_cluster_random.csv
+rm errBR_cluster.csv
 
 #gather tokens
 while IFS=, read -r token size bit cluster score
@@ -108,15 +88,18 @@ do
     idToSize[$nElements]="$size"
     idToBit[$nElements]="$bit"
 
-    if [ ! -v 'cToSize[$cluster]' ]; then
+    if [ ! -v 'cToIds[$cluster]' ]; then
         cToSize[$cluster]=1
+        cToIds[$cluster]="$nElements"
         #generate clustList
+        #dirty way of creating a list
         if [ "$clustList" = "" ]; then
             clustList="$cluster"
         else
-            clustList="$clustList, $cluster"
+            clustList="$clustList,$cluster"
         fi
     else
+        cToIds[$cluster]="${cToIds[$cluster]},$nElements"
         ((cToSize[$cluster]++))
     fi
 
@@ -125,59 +108,34 @@ do
 #this is to remove the csv header
 done < <(tail -n +2 $clusterFile)
 
-rm -rf imgs/BR_cluster
-mkdir imgs/BR_cluster
 
-simulateGolden
-tojpgGolden
+#do not simulate if -s is not given as input
+if [ "$1" = "-s" ]; then
+
+    rm -rf theta/BR_cluster
+    mkdir theta/BR_cluster
+
+    simulateGolden
+fi
 
 
-#dump csv header
-echo "cluster,size,ssim" >> ssimBR_cluster_random.csv
 
+#dump csv header 
+echo "cluster,size,err" >> errBR_cluster.csv
 
-#for each input size
-for cluster in ${clustList//,/ }
+for c in ${clustList//,/ }
 do
+    if [ "$1" = "-s" ]; then
+        #generate the err for this cluster and save it in 'returnErr'
+        simulateCluster "${cToIds[$c]}" "$c"
+    fi
+    retErr=$(./scripts/getError/getError.x "theta/BR_cluster/golden.csv" "theta/BR_cluster/cluster_${c}.csv" "2,3")
 
-    sumSSIM=0
-    size=${cToSize[$cluster]}
-    #gather random list of statements of size '$size'
-    for ((j=0;j<reps;j++)); do
-        declare -A usedIds
-        tmpList=""
-        for ((i=0;i<size;i++)); do
-            #find a new random number (not present in the list)
-            while [[ 1 ]]; do
-                random=$((RANDOM % $nElements))
-                if [ ! -v 'usedIds[$random]' ]; then
-                    #found a new random number!
-                    #store the number
-                    usedIds[$random]="ok"
-                    break
-                fi
-            done
-
-            #dirty way of creating a list
-            if [[ $tmpList == "" ]]; then
-                tmpList="$random"
-            else
-                tmpList="$tmpList, $random"
-            fi
-        done
-        unset usedIds
-
-        simulateCluster "$tmpList" "$cluster"
-        getSSIMcluster "$cluster"
-        sumSSIM=$(awk "BEGIN{ print ($sumSSIM + $returnSSIM)}")
-    done
-    #compute the avg ssim
-    avgSSIM=$(awk "BEGIN{ print ($sumSSIM / $reps)}")
-
-    #dump csv header 
-    echo "$cluster,$size,$avgSSIM" >> ssimBR_cluster_random.csv
+    #dump err to file
+    echo "$c,${cToSize[$c]},$retErr" >> errBR_cluster.csv
 
 done
 
 #move the result to the proper directory
-mv ssimBR_cluster_random.csv ssim/
+mv errBR_cluster.csv err/
+

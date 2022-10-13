@@ -1,7 +1,6 @@
-`define SAC(ID,SIGNAL,MASK) \
-`ifdef ID  \
+`define SAC(SIGNAL,MASK) \
+`ifdef SIGNAL  \
     {SIGNAL & MASK}\
 `else\
     SIGNAL\
 `endif
-

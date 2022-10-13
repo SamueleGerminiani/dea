@@ -31,22 +31,25 @@ sobel/simulator/imgs/SR_cluster/*
 sobel/simulator/vcd/*
 sobel/simulator/imgs/*
 sobel/simulator/transcript
+sobel/simulator/IO/out/*
+
+inversek2j/simulator/work/*
+inversek2j/simulator/theta/BR/*
+inversek2j/simulator/theta/BR_cluster/*
+inversek2j/simulator/theta/SR/*
+inversek2j/simulator/theta/SR_cluster/*
+inversek2j/simulator/csv/*
+inversek2j/simulator/theta/*
+inversek2j/simulator/transcript
 
 adder/modelsim/work/*
 adder/modelsim/vcd/*
 
-inversek2j/modelsim/work/*
-inversek2j/modelsim/theta/sr/*
-inversek2j/modelsim/theta/vbr/*
-inversek2j/modelsim/csv/*
 
 brent-kung/modelsim/vcd/*
 brent-kung/modelsim/work/*
 brent-kung/modelsim/vcd/*
 
-inversek2j/modelsim/vcd/*
-inversek2j/modelsim/work/*
-inversek2j/modelsim/vcd/*
 
 kogge-stone/modelsim/vcd/*
 kogge-stone/modelsim/work/*
