@@ -8,6 +8,7 @@ top="sobel_tb"
 include=""
 vcd="$top/*"
 traceLength=1000
+tvPath="../IO/tv/"
 
 #clear working directories
 rm -rf vcd/latest
@@ -16,7 +17,7 @@ rm -rf work
 
 #generate golden trace
 $MODELSIM_BIN/vlib work
-$MODELSIM_BIN/vlog +define+TRACE_LENGTH=""$traceLength"" $include $tb $src
+$MODELSIM_BIN/vlog +define+TV_PATH=""$tvPath"" +define+TRACE_LENGTH=""$traceLength"" $include $tb $src
 $MODELSIM_BIN/vsim work.$top -c -voptargs="+acc" -do "vcd file vcd/latest/golden.vcd; vcd add $vcd; run -all; quit" 
 
 #for each var

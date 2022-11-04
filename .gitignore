@@ -42,6 +42,10 @@ inversek2j/simulator/csv/*
 inversek2j/simulator/theta/*
 inversek2j/simulator/transcript
 
+nn/simulator/work/*
+nn/simulator/csv/*
+nn/simulator/transcript
+
 adder/modelsim/work/*
 adder/modelsim/vcd/*
 
